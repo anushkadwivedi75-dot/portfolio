@@ -16,7 +16,7 @@ export default function App() {
   const [resumeOpen, setResumeOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-[#09090b] text-[#ededf0] font-sans selection:bg-violet-500/25 selection:text-violet-200 antialiased overflow-x-hidden">
+    <div className="min-h-screen bg-[#08080a] text-[#ededf0] font-sans selection:bg-violet-500/25 selection:text-violet-200 antialiased overflow-x-hidden">
       {/* Navigation */}
       <Navbar onOpenResume={() => setResumeOpen(true)} />
 
@@ -26,8 +26,8 @@ export default function App() {
         <Hero onOpenResume={() => setResumeOpen(true)} />
 
         {/* Selected Work Section */}
-        <section id="work" className="py-24 border-b border-white/[0.06] relative">
-          <div className="max-w-6xl mx-auto px-5 sm:px-8 space-y-16">
+        <section id="work" className="py-28 border-b border-white/[0.06] relative">
+          <div className="max-w-6xl mx-auto px-5 sm:px-8 space-y-20">
             {/* Section Header */}
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
               <div className="space-y-3">
@@ -38,16 +38,20 @@ export default function App() {
                   </span>
                 </div>
                 <h2 className="text-3xl sm:text-5xl font-bold text-zinc-100 font-sans tracking-tight">
-                  Applied architectures &amp; end-to-end engineering.
+                  Selected{' '}
+                  <span className="font-editorial italic font-normal text-violet-300 tracking-normal px-1">
+                    architectures
+                  </span>{' '}
+                  &amp; systems.
                 </h2>
               </div>
               <p className="text-zinc-400 max-w-md text-sm font-light leading-relaxed">
-                Substantial case studies spanning spatial hardware telemetry, cloud storage architectures, and applied retrieval-augmented NLP.
+                Substantial case studies spanning spatial hardware telemetry, distributed cloud storage, and applied retrieval-augmented NLP.
               </p>
             </div>
 
             {/* Project Showcase List */}
-            <div className="space-y-16">
+            <div className="space-y-20">
               {projectsData.map((project) => (
                 <ProjectCard
                   key={project.id}

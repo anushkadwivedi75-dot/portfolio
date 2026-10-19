@@ -5,11 +5,11 @@
   --font-serif: 'Instrument Serif', Georgia, serif;
   --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
-  --color-canvas: #09090b;
-  --color-surface: #111115;
-  --color-surface-elevated: #16161d;
-  --color-surface-hover: #1c1c24;
-  --color-border-subtle: rgba(255, 255, 255, 0.08);
+  --color-canvas: #08080a;
+  --color-surface: #0c0d12;
+  --color-surface-elevated: #13141c;
+  --color-surface-hover: #171822;
+  --color-border-subtle: rgba(255, 255, 255, 0.07);
   --color-border-accent: rgba(167, 139, 250, 0.25);
   
   --color-lavender-subtle: #ddd6fe;
@@ -24,27 +24,33 @@
 
 html {
   font-family: var(--font-sans);
-  background-color: #09090b;
+  background-color: #08080a;
   color: #ededf0;
 }
 
 body {
   margin: 0;
   overflow-x: hidden;
-  background-color: #09090b;
+  background-color: #08080a;
+  color: #ededf0;
+}
+
+/* Explicit editorial typography utility */
+.font-editorial {
+  font-family: 'Instrument Serif', Georgia, serif;
 }
 
 /* Subtle architectural grid pattern */
 .bg-grid-pattern {
-  background-size: 40px 40px;
+  background-size: 48px 48px;
   background-image: 
-    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    linear-gradient(to right, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
 }
 
 .bg-dot-pattern {
   background-size: 24px 24px;
-  background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+  background-image: radial-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px);
 }
 
 /* Radial dark vignette fade */
@@ -55,21 +61,21 @@ body {
 
 /* Custom minimal scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #09090b;
+  background: #08080a;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #27272a;
+  background: #232329;
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #3f3f46;
+  background: #383842;
 }
 
 /* Subtle focus outlines */

@@ -61,13 +61,13 @@ LEADERSHIP & EXTRACURRICULARS
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto bg-black/85 backdrop-blur-md">
       <div
-        className="relative w-full max-w-3xl bg-[#0e0f16] border border-white/[0.12] rounded-2xl shadow-2xl overflow-hidden my-auto max-h-[92vh] flex flex-col animate-in fade-in zoom-in-95 duration-200"
+        className="relative w-full max-w-3xl bg-[#0c0d13] border border-white/[0.1] rounded-3xl shadow-2xl overflow-hidden my-auto max-h-[92vh] flex flex-col animate-in fade-in zoom-in-95 duration-200"
         role="dialog"
         aria-modal="true"
         aria-labelledby="resume-title"
       >
         {/* Header Controls */}
-        <div className="px-6 py-4 bg-[#13141f] border-b border-white/[0.08] flex items-center justify-between gap-4 shrink-0">
+        <div className="px-6 py-4 bg-[#101118] border-b border-white/[0.06] flex items-center justify-between gap-4 shrink-0">
           <div className="flex items-center gap-2 text-zinc-100 font-semibold text-sm">
             <span className="w-2 h-2 rounded-full bg-violet-400"></span>
             <span id="resume-title">Curriculum Vitae — {personalInfo.name}</span>
@@ -138,7 +138,7 @@ LEADERSHIP & EXTRACURRICULARS
             <h2 className="text-xs font-mono uppercase tracking-widest text-violet-400 font-bold">
               Education
             </h2>
-            <div className="p-4 rounded-xl bg-[#13141f] border border-white/[0.05] space-y-2">
+            <div className="p-5 rounded-2xl bg-[#111219] border border-white/[0.06] space-y-2">
               <div className="flex flex-wrap justify-between items-baseline gap-2">
                 <div className="font-bold text-zinc-100 text-sm">{educationInfo.institution}</div>
                 <div className="text-xs font-mono text-zinc-400">{educationInfo.duration}</div>
@@ -159,19 +159,19 @@ LEADERSHIP & EXTRACURRICULARS
               Technical Skills
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-              <div className="p-3 rounded-lg bg-[#13141f] border border-white/[0.05] space-y-1">
+              <div className="p-4 rounded-xl bg-[#111219] border border-white/[0.06] space-y-1">
                 <div className="font-mono text-zinc-400 text-[11px] font-semibold">PROGRAMMING</div>
                 <div className="text-zinc-200">C/C++, Python, Java, JavaScript, TypeScript, SQL, HTML5, CSS3</div>
               </div>
-              <div className="p-3 rounded-lg bg-[#13141f] border border-white/[0.05] space-y-1">
+              <div className="p-4 rounded-xl bg-[#111219] border border-white/[0.06] space-y-1">
                 <div className="font-mono text-zinc-400 text-[11px] font-semibold">WEB &amp; BACKEND</div>
                 <div className="text-zinc-200">ReactJS, Next.js, FastAPI, Express.js, Tailwind CSS, Bootstrap, Node.js</div>
               </div>
-              <div className="p-3 rounded-lg bg-[#13141f] border border-white/[0.05] space-y-1">
+              <div className="p-4 rounded-xl bg-[#111219] border border-white/[0.06] space-y-1">
                 <div className="font-mono text-zinc-400 text-[11px] font-semibold">TOOLS &amp; PLATFORMS</div>
                 <div className="text-zinc-200">Git, GitHub, Docker, VS Code, Figma, Firebase, Supabase, MongoDB</div>
               </div>
-              <div className="p-3 rounded-lg bg-[#13141f] border border-white/[0.05] space-y-1">
+              <div className="p-4 rounded-xl bg-[#111219] border border-white/[0.06] space-y-1">
                 <div className="font-mono text-zinc-400 text-[11px] font-semibold">AI, DATA &amp; SPATIAL</div>
                 <div className="text-zinc-200">PostgreSQL, PostGIS, scikit-learn, SQLite, Vector Databases, ESP32, BLE</div>
               </div>
@@ -185,7 +185,7 @@ LEADERSHIP & EXTRACURRICULARS
             </h2>
             <div className="space-y-4">
               {projectsData.map((project) => (
-                <div key={project.id} className="p-4 rounded-xl bg-[#13141f] border border-white/[0.05] space-y-2">
+                <div key={project.id} className="p-5 rounded-2xl bg-[#111219] border border-white/[0.06] space-y-2">
                   <div className="flex flex-wrap justify-between items-baseline gap-2">
                     <div className="font-bold text-zinc-100 text-sm">
                       {project.title} — {project.subtitle}
@@ -195,7 +195,7 @@ LEADERSHIP & EXTRACURRICULARS
                   <div className="text-xs font-mono text-violet-300">
                     {project.technologies.join(' • ')}
                   </div>
-                  <ul className="space-y-1.5 text-xs text-zinc-400 pt-1">
+                  <ul className="space-y-1.5 text-xs text-zinc-400 pt-1 font-light">
                     {project.keyHighlights.slice(0, 3).map((h, i) => (
                       <li key={i} className="flex items-start gap-2">
                         <span className="text-violet-400 mt-0.5">•</span>
@@ -215,12 +215,12 @@ LEADERSHIP & EXTRACURRICULARS
             </h2>
             <div className="space-y-3">
               {leadershipExperience.map((role, idx) => (
-                <div key={idx} className="p-3.5 rounded-xl bg-[#13141f] border border-white/[0.05] space-y-1 text-xs">
+                <div key={idx} className="p-4 rounded-xl bg-[#111219] border border-white/[0.06] space-y-1 text-xs">
                   <div className="flex justify-between items-baseline">
                     <span className="font-bold text-zinc-200">{role.role} — {role.organization}</span>
                     <span className="font-mono text-zinc-500 text-[11px]">{role.period}</span>
                   </div>
-                  <p className="text-zinc-400">{role.description}</p>
+                  <p className="text-zinc-400 font-light">{role.description}</p>
                 </div>
               ))}
             </div>
@@ -228,7 +228,7 @@ LEADERSHIP & EXTRACURRICULARS
         </div>
 
         {/* Footer Notice */}
-        <div className="px-6 py-3 bg-[#13141f] border-t border-white/[0.08] flex items-center justify-between text-xs text-zinc-500 font-mono shrink-0">
+        <div className="px-6 py-3 bg-[#101118] border-t border-white/[0.06] flex items-center justify-between text-xs text-zinc-500 font-mono shrink-0">
           <span>Verified against academic &amp; technical credentials</span>
           <button
             onClick={onClose}

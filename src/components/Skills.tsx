@@ -20,7 +20,6 @@ export default function Skills() {
       ? skillsList
       : skillsList.filter((s) => s.category === activeCategory);
 
-  // Grouped breakdown for comprehensive view
   const categoryGroups = [
     {
       name: 'Programming',
@@ -49,8 +48,8 @@ export default function Skills() {
   ];
 
   return (
-    <section id="skills" className="py-24 border-b border-white/[0.06] relative">
-      <div className="max-w-6xl mx-auto px-5 sm:px-8 space-y-12">
+    <section id="skills" className="py-28 border-b border-white/[0.06] relative">
+      <div className="max-w-6xl mx-auto px-5 sm:px-8 space-y-14">
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div className="space-y-3">
@@ -61,12 +60,16 @@ export default function Skills() {
               </span>
             </div>
             <h2 className="text-3xl sm:text-5xl font-bold text-zinc-100 font-sans tracking-tight">
-              Tools, frameworks, &amp; engineering stack.
+              Tools, frameworks, &amp;{' '}
+              <span className="font-editorial italic font-normal text-violet-300 tracking-normal px-1">
+                engineering stack
+              </span>
+              .
             </h2>
           </div>
 
           {/* Interactive Category Pills */}
-          <div className="flex flex-wrap items-center gap-1.5 p-1.5 rounded-xl bg-[#12131b] border border-white/[0.08]">
+          <div className="flex flex-wrap items-center gap-1.5 p-1.5 rounded-xl bg-[#0c0d13] border border-white/[0.08]">
             {categories.map((cat) => {
               const IconComp = cat.icon;
               return (
@@ -87,7 +90,7 @@ export default function Skills() {
           </div>
         </div>
 
-        {/* Dynamic Display: When 'All', show grouped architecture cards; else show filtered grid */}
+        {/* Dynamic Display: When 'All', show grouped cards; else show filtered grid */}
         {activeCategory === 'All' ? (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {categoryGroups.map((group) => {
@@ -95,7 +98,7 @@ export default function Skills() {
               return (
                 <div
                   key={group.name}
-                  className="p-6 sm:p-7 rounded-2xl bg-[#101117] border border-white/[0.08] hover:border-violet-500/30 transition-all space-y-5"
+                  className="p-7 rounded-3xl bg-[#0c0d13] border border-white/[0.08] hover:border-violet-500/30 transition-all space-y-5 shadow-xl"
                 >
                   <div className="flex items-center justify-between border-b border-white/[0.06] pb-3">
                     <div className="flex items-center gap-2 text-zinc-100 font-semibold text-sm">
@@ -107,7 +110,7 @@ export default function Skills() {
                     </span>
                   </div>
 
-                  <p className="text-xs text-zinc-400 leading-relaxed">
+                  <p className="text-xs text-zinc-400 leading-relaxed font-light">
                     {group.context}
                   </p>
 
@@ -117,8 +120,8 @@ export default function Skills() {
                         key={skill.name}
                         className={`px-3 py-1.5 rounded-lg text-xs font-mono transition-colors ${
                           skill.isKey
-                            ? 'bg-[#181924] text-zinc-100 border border-violet-500/30 font-medium'
-                            : 'bg-[#13141c] text-zinc-400 border border-white/[0.05]'
+                            ? 'bg-zinc-900 text-zinc-100 border border-violet-500/30 font-medium'
+                            : 'bg-zinc-900/60 text-zinc-400 border border-white/[0.05]'
                         }`}
                       >
                         {skill.name}
@@ -130,9 +133,9 @@ export default function Skills() {
             })}
           </div>
         ) : (
-          <div className="p-8 rounded-2xl bg-[#101117] border border-white/[0.08] space-y-6">
-            <div className="flex items-center justify-between border-b border-white/[0.06] pb-3">
-              <span className="text-xs font-mono uppercase tracking-wider text-violet-400 font-semibold">
+          <div className="p-8 sm:p-10 rounded-3xl bg-[#0c0d13] border border-white/[0.08] space-y-6 shadow-xl">
+            <div className="flex items-center justify-between border-b border-white/[0.06] pb-4">
+              <span className="text-xs font-mono uppercase tracking-wider text-violet-300 font-semibold">
                 Viewing {activeCategory} Technologies
               </span>
               <span className="text-xs font-mono text-zinc-500">{filteredSkills.length} Verified</span>
@@ -142,7 +145,7 @@ export default function Skills() {
               {filteredSkills.map((skill) => (
                 <div
                   key={skill.name}
-                  className="p-3.5 rounded-xl bg-[#14151e] border border-white/[0.06] hover:border-violet-400/40 transition-colors flex items-center justify-between"
+                  className="p-3.5 rounded-xl bg-zinc-900/70 border border-white/[0.06] hover:border-violet-400/40 transition-colors flex items-center justify-between"
                 >
                   <span className="font-mono text-xs text-zinc-200 font-medium">{skill.name}</span>
                   {skill.isKey && (
@@ -155,12 +158,12 @@ export default function Skills() {
         )}
 
         {/* Engineering Rigor Note */}
-        <div className="p-4 rounded-xl bg-[#0e0f15] border border-white/[0.05] flex flex-wrap items-center justify-between gap-4 text-xs font-mono text-zinc-500">
+        <div className="p-4 rounded-xl bg-[#0a0b10] border border-white/[0.05] flex flex-wrap items-center justify-between gap-4 text-xs font-mono text-zinc-500">
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
             <span>All technologies reflect hands-on implementation across projects, hackathons &amp; coursework.</span>
           </div>
-          <span className="text-zinc-400">Zero arbitrary percentages or unverified claims.</span>
+          <span className="text-zinc-400">Zero arbitrary percentages or ungrounded claims.</span>
         </div>
       </div>
     </section>

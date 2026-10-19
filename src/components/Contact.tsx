@@ -14,7 +14,6 @@ export default function Contact({ onOpenResume }: ContactProps) {
   useEffect(() => {
     const updateTime = () => {
       const now = new Date();
-      // IST is UTC+5:30
       const options: Intl.DateTimeFormatOptions = {
         timeZone: 'Asia/Kolkata',
         hour: '2-digit',
@@ -41,21 +40,25 @@ export default function Contact({ onOpenResume }: ContactProps) {
   };
 
   return (
-    <footer id="contact" className="pt-24 pb-12 bg-[#09090c] relative">
+    <footer id="contact" className="pt-28 pb-12 bg-[#08080a] relative">
       <div className="max-w-6xl mx-auto px-5 sm:px-8 space-y-16">
         {/* Contact Invitation Box */}
-        <div className="p-8 sm:p-12 lg:p-16 rounded-3xl bg-gradient-to-b from-[#12131b] to-[#0d0e14] border border-white/[0.08] relative overflow-hidden shadow-2xl space-y-8">
+        <div className="p-8 sm:p-12 lg:p-16 rounded-3xl bg-gradient-to-b from-[#0e0f16] to-[#0a0b10] border border-white/[0.08] relative overflow-hidden shadow-2xl space-y-8">
           {/* Subtle violet ambient light */}
           <div className="absolute top-0 right-0 w-96 h-96 bg-violet-600/10 rounded-full blur-3xl pointer-events-none"></div>
 
           <div className="space-y-4 max-w-2xl relative z-10">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-violet-500/10 border border-violet-500/20 text-xs font-mono text-violet-300">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-violet-500/10 border border-violet-500/25 text-xs font-mono text-violet-300">
               <span className="w-1.5 h-1.5 rounded-full bg-violet-400"></span>
               <span>Available for Technical Collaboration</span>
             </div>
 
             <h2 className="text-3xl sm:text-5xl md:text-6xl font-bold text-zinc-100 font-sans tracking-tight leading-tight">
-              Let’s build something intelligent together.
+              Let’s build something{' '}
+              <span className="font-editorial italic font-normal text-violet-300 tracking-normal px-1">
+                intelligent
+              </span>{' '}
+              together.
             </h2>
 
             <p className="text-zinc-400 text-sm sm:text-base leading-relaxed font-light">
@@ -76,7 +79,7 @@ export default function Contact({ onOpenResume }: ContactProps) {
 
             <button
               onClick={handleCopyEmail}
-              className="inline-flex items-center gap-2 px-5 py-3.5 rounded-full text-sm font-medium bg-[#1a1c26] hover:bg-[#212433] text-zinc-200 border border-white/[0.1] hover:border-violet-400/40 transition-all cursor-pointer"
+              className="inline-flex items-center gap-2 px-5 py-3.5 rounded-full text-sm font-medium bg-[#14151e] hover:bg-[#191a26] text-zinc-200 border border-white/[0.09] hover:border-violet-400/40 transition-all cursor-pointer"
             >
               {copied ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4 text-zinc-400" />}
               <span>{copied ? 'Email Copied!' : 'Copy Email Address'}</span>
