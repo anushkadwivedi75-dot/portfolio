@@ -1,7 +1,5 @@
-import { ArrowDown, FileText, Mail, Sparkles, Terminal, Activity, MapPin } from 'lucide-react';
-import { personalInfo, educationInfo } from '../data/portfolioData';
+import { soundManager } from '../utils/soundEffects';
 import ConnectedSystemsCanvas from './ConnectedSystemsCanvas';
-import { GithubIcon, LinkedinIcon } from './icons/BrandIcons';
 
 interface HeroProps {
   onOpenResume: () => void;
@@ -9,209 +7,201 @@ interface HeroProps {
 
 export default function Hero({ onOpenResume }: HeroProps) {
   return (
-    <section
-      id="hero"
-      className="relative min-h-[94vh] pt-32 pb-16 flex flex-col justify-between overflow-hidden border-b border-white/[0.06]"
-    >
-      {/* Subtle Connected Systems Interactive Background */}
-      <ConnectedSystemsCanvas />
+    <header className="min-h-screen pt-28 pb-14 px-6 sm:px-12 lg:px-20 flex flex-col justify-between relative bg-[var(--canvas-bg)] text-[var(--canvas-text)] paper-grain overflow-hidden">
+      {/* Interactive Constellation Background (Restored from Initial Design) */}
+      <div className="absolute inset-0 pointer-events-none opacity-40 dark:opacity-60 z-0">
+        <ConnectedSystemsCanvas />
+      </div>
 
-      {/* Grid Pattern Vignette */}
-      <div className="absolute inset-0 bg-grid-pattern opacity-30 pointer-events-none"></div>
-      <div className="absolute inset-0 bg-gradient-to-b from-[#08080a]/60 via-transparent to-[#08080a] pointer-events-none"></div>
+      {/* Subtle Dot Grid Pattern Vignette */}
+      <div className="absolute inset-0 bg-grid-pattern opacity-15 dark:opacity-25 pointer-events-none z-0"></div>
 
-      <div className="relative z-10 max-w-6xl mx-auto px-5 sm:px-8 w-full my-auto space-y-14">
-        {/* Main Grid: Typographic Narrative on Left, Anchored Telemetry Card on Right */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
-          {/* Left Column: Editorial Headline & Narrative */}
-          <div className="lg:col-span-7 space-y-7">
-            {/* Status & Focus Indicator */}
-            <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-[#0e0f16] border border-white/[0.08] text-xs font-mono text-zinc-300 shadow-sm backdrop-blur-md">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+      {/* Top Navbar */}
+      <nav className="absolute top-0 left-0 right-0 py-6 px-6 sm:px-12 lg:px-20 flex items-center justify-between z-30">
+        <a
+          href="#hero"
+          onClick={() => soundManager.playPop()}
+          className="font-sans font-bold text-base tracking-tight text-[var(--canvas-text)] hover:opacity-80 transition-opacity"
+        >
+          anushka.
+        </a>
+
+        <div className="flex items-center gap-6 sm:gap-8 text-xs font-mono">
+          <a
+            href="#work"
+            onClick={() => soundManager.playPop()}
+            className="text-[var(--color-ink-dim)] hover:text-[var(--canvas-text)] transition-colors"
+          >
+            work
+          </a>
+          <a
+            href="#snippets"
+            onClick={() => soundManager.playPop()}
+            className="text-[var(--color-ink-dim)] hover:text-[var(--canvas-text)] transition-colors"
+          >
+            systems
+          </a>
+          <a
+            href="#about"
+            onClick={() => soundManager.playPop()}
+            className="text-[var(--color-ink-dim)] hover:text-[var(--canvas-text)] transition-colors"
+          >
+            about me
+          </a>
+          <button
+            onClick={() => {
+              soundManager.playClick();
+              onOpenResume();
+            }}
+            className="text-[var(--color-ink-dim)] hover:text-[var(--color-accent)] transition-colors cursor-pointer"
+          >
+            resume ↗
+          </button>
+        </div>
+      </nav>
+
+      {/* Main Hero Content Stage */}
+      <div className="my-auto pt-8 sm:pt-12 max-w-7xl w-full mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 items-center relative z-10">
+        {/* Left Column: Wordmark & Typography */}
+        <div className="lg:col-span-6 space-y-8">
+          {/* Eyebrow */}
+          <div className="space-y-1">
+            <p className="text-[11px] font-mono tracking-widest uppercase text-[var(--color-ink-dim)] font-semibold flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span>AI/ML Engineer &amp; Full-Stack Developer</span>
+            </p>
+          </div>
+
+          {/* Hand-drawn "hey, I'm" with SVG arrow */}
+          <div className="relative inline-block">
+            <div className="flex items-center gap-2">
+              <span className="font-hand text-3xl sm:text-4xl text-[var(--canvas-text)] -rotate-3">
+                hey, I’m
               </span>
-              <span className="text-zinc-200 font-medium">B.Tech AI &amp; ML @ DJSCE</span>
-              <span className="text-zinc-600 hidden sm:inline">•</span>
-              <span className="text-violet-300 hidden sm:inline">Mumbai, IN</span>
+              <svg
+                viewBox="0 0 50 35"
+                className="w-10 h-7 text-[var(--color-accent)] fill-none stroke-current stroke-2 rotate-6"
+              >
+                <path d="M4 8C20 3 36 8 42 26" strokeLinecap="round" />
+                <path d="M34 22l8 6 6-9" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
             </div>
 
-            {/* Large Typographic Headline with Editorial Serif Accents */}
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-zinc-100 font-sans leading-[1.12]">
-              I build{' '}
-              <span className="font-editorial italic font-normal text-violet-300 tracking-normal text-[1.12em] px-0.5">
-                intelligent systems
-              </span>{' '}
-              and{' '}
-              <span className="font-editorial italic font-normal text-violet-300 tracking-normal text-[1.12em] px-0.5">
-                full-stack products
-              </span>{' '}
-              that solve real-world problems.
-            </h1>
-
-            {/* Concise Supporting Copy */}
-            <p className="text-base sm:text-lg text-zinc-400 max-w-2xl font-light leading-relaxed">
-              AI/ML engineering undergraduate at SVKM's DJS College of Engineering. I build end-to-end software bridging hardware edge telemetry, spatial database pipelines, and responsive cloud applications.
-            </p>
-
-            {/* Action CTAs & Social Links */}
-            <div className="pt-2 flex flex-wrap items-center gap-4">
-              <a
-                href="#work"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-xs sm:text-sm font-semibold bg-zinc-100 hover:bg-white text-zinc-950 transition-all duration-200 shadow-lg shadow-white/5 hover:scale-[1.02] cursor-pointer group"
-              >
-                <span>Explore Selected Work</span>
-                <ArrowDown className="w-4 h-4 text-zinc-700 group-hover:translate-y-0.5 transition-transform" />
-              </a>
-
-              <button
-                onClick={onOpenResume}
-                className="inline-flex items-center gap-2 px-5 py-3 rounded-full text-xs sm:text-sm font-medium bg-[#111219] hover:bg-[#161822] text-zinc-200 border border-white/[0.09] hover:border-violet-400/40 transition-all duration-200 cursor-pointer group"
-              >
-                <FileText className="w-4 h-4 text-violet-400 group-hover:text-violet-300" />
-                <span>Resume</span>
-              </button>
-
-              {/* Social Link Badges */}
-              <div className="flex items-center gap-2 pl-2 border-l border-white/[0.08]">
-                <a
-                  href={personalInfo.github}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="p-2.5 rounded-full bg-[#111219] hover:bg-zinc-800 text-zinc-400 hover:text-white border border-white/[0.07] transition-colors cursor-pointer"
-                  title="GitHub Profile"
-                >
-                  <GithubIcon className="w-4 h-4" />
-                </a>
-
-                <a
-                  href={personalInfo.linkedin}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="p-2.5 rounded-full bg-[#111219] hover:bg-zinc-800 text-zinc-400 hover:text-white border border-white/[0.07] transition-colors cursor-pointer"
-                  title="LinkedIn Profile"
-                >
-                  <LinkedinIcon className="w-4 h-4" />
-                </a>
-
-                <a
-                  href={`mailto:${personalInfo.email}`}
-                  className="p-2.5 rounded-full bg-[#111219] hover:bg-zinc-800 text-zinc-400 hover:text-white border border-white/[0.07] transition-colors cursor-pointer"
-                  title="Send Email"
-                >
-                  <Mail className="w-4 h-4" />
-                </a>
-              </div>
+            {/* Giant Signature Display Wordmark */}
+            <div className="relative mt-1">
+              <h1 className="text-6xl sm:text-8xl md:text-9xl font-bold tracking-tighter font-sans text-[var(--canvas-text)] leading-none select-none">
+                anushka<span className="text-[var(--color-accent)] cursor-pointer inline-block hover:scale-125 transition-transform">.</span>
+              </h1>
             </div>
           </div>
 
-          {/* Right Column: Anchored System Profile & Telemetry Card */}
-          <div className="lg:col-span-5">
-            <div className="rounded-2xl bg-[#0c0d14]/90 border border-white/[0.09] p-6 sm:p-7 backdrop-blur-xl shadow-2xl relative overflow-hidden space-y-6">
-              {/* Subtle ambient corner light */}
-              <div className="absolute top-0 right-0 w-44 h-44 bg-violet-600/10 rounded-full blur-3xl pointer-events-none"></div>
+          {/* Subtitle Statement */}
+          <div className="pt-2 max-w-md text-base sm:text-lg leading-relaxed text-[var(--canvas-text)] font-normal space-y-1">
+            <p>I build intelligent products.</p>
+            <p className="text-[var(--color-ink-dim)]">
+              I also like making them <em className="font-editorial italic font-normal text-[var(--canvas-text)]">work.</em>
+            </p>
+          </div>
 
-              {/* Window Header */}
-              <div className="flex items-center justify-between border-b border-white/[0.06] pb-4">
-                <div className="flex items-center gap-2">
-                  <span className="w-2.5 h-2.5 rounded-full bg-[#27272a]"></span>
-                  <span className="w-2.5 h-2.5 rounded-full bg-[#27272a]"></span>
-                  <span className="w-2.5 h-2.5 rounded-full bg-[#27272a]"></span>
-                  <span className="ml-2 font-mono text-[11px] text-zinc-500">engineer_profile.sys</span>
-                </div>
-                <div className="flex items-center gap-1.5 font-mono text-[10px] text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
-                  <Activity className="w-3 h-3" />
-                  <span>ONLINE</span>
-                </div>
-              </div>
-
-              {/* Engineering Profile Summary */}
-              <div className="space-y-4 text-xs font-mono">
-                <div className="space-y-1">
-                  <div className="text-[10px] uppercase tracking-wider text-zinc-500">Engineer Identity</div>
-                  <div className="text-zinc-100 font-sans font-semibold text-base flex items-center justify-between">
-                    <span>{personalInfo.name}</span>
-                    <span className="text-xs text-violet-400 font-mono font-normal">Class of 2028</span>
-                  </div>
-                  <div className="text-zinc-400 text-xs font-sans">
-                    B.Tech AI &amp; Machine Learning • SVKM's DJSCE
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-3 pt-2">
-                  <div className="p-3 rounded-xl bg-white/[0.02] border border-white/[0.05]">
-                    <span className="text-[10px] uppercase tracking-wider text-zinc-500 block">Cumulative CGPA</span>
-                    <span className="text-base font-bold font-sans text-zinc-100 mt-0.5 block">{educationInfo.cgpa}</span>
-                    <span className="text-[10px] text-emerald-400">First Class Distinction</span>
-                  </div>
-                  <div className="p-3 rounded-xl bg-white/[0.02] border border-white/[0.05]">
-                    <span className="text-[10px] uppercase tracking-wider text-zinc-500 block">Honours Program</span>
-                    <span className="text-xs font-bold font-sans text-zinc-200 mt-1 block">Quant Finance</span>
-                    <span className="text-[10px] text-violet-400">Fintech Analytics</span>
-                  </div>
-                </div>
-
-                {/* Core Domains */}
-                <div className="space-y-2 pt-2 border-t border-white/[0.06]">
-                  <div className="text-[10px] uppercase tracking-wider text-zinc-500 flex items-center gap-1.5">
-                    <Terminal className="w-3.5 h-3.5 text-violet-400" />
-                    <span>Technical Architecture Focus</span>
-                  </div>
-                  <div className="flex flex-wrap gap-1.5">
-                    {['Spatial PostGIS', 'Isolation Forest ML', 'FastAPI Backends', 'Next.js / React', 'BLE Telemetry'].map((tag) => (
-                      <span
-                        key={tag}
-                        className="text-[10px] px-2 py-0.5 rounded bg-zinc-900 text-zinc-300 border border-white/[0.06]"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Location & Status Strip */}
-                <div className="pt-2 border-t border-white/[0.06] flex items-center justify-between text-[11px] text-zinc-500">
-                  <span className="flex items-center gap-1.5">
-                    <MapPin className="w-3 h-3 text-violet-400" />
-                    <span>Mumbai, India</span>
-                  </span>
-                  <span className="text-violet-300 font-sans">Open for Collaborations</span>
-                </div>
-              </div>
-            </div>
+          {/* Quick CTAs */}
+          <div className="pt-3 flex items-center gap-4 text-xs font-mono">
+            <a
+              href="#work"
+              onClick={() => soundManager.playPop()}
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[var(--canvas-text)] text-[var(--canvas-bg)] font-sans font-medium hover:opacity-90 transition-all hover:scale-105"
+            >
+              <span>Explore My Work</span>
+              <span>↓</span>
+            </a>
+            <button
+              onClick={() => {
+                soundManager.playClick();
+                onOpenResume();
+              }}
+              className="px-4 py-2.5 rounded-full border border-zinc-300 dark:border-white/10 hover:border-violet-400 text-[var(--canvas-text)] font-sans transition-colors cursor-pointer"
+            >
+              View CV ↗
+            </button>
           </div>
         </div>
 
-        {/* Minimal Bottom Telemetry Strip */}
-        <div className="pt-8 border-t border-white/[0.06] grid grid-cols-2 md:grid-cols-4 gap-6 text-xs font-mono">
-          <div className="space-y-1">
-            <div className="text-zinc-500 flex items-center gap-1.5 text-[11px] uppercase tracking-wider">
-              <Sparkles className="w-3 h-3 text-violet-400" />
-              <span>Academic CGPA</span>
+        {/* Right Column: Three Editorial Picture Templates with Paperclips & Tape */}
+        <div className="lg:col-span-6 relative flex items-center justify-center min-h-[440px] sm:min-h-[480px]">
+          
+          {/* Picture Template 1 (Top-Left, tilted -6deg) */}
+          <div
+            onClick={() => soundManager.playPop()}
+            className="w-52 sm:w-60 p-3 pb-7 rounded-xl bg-white dark:bg-zinc-900 shadow-2xl border border-zinc-200 dark:border-white/10 transform -rotate-6 hover:rotate-0 hover:scale-105 hover:z-30 transition-all duration-300 cursor-pointer absolute -top-4 sm:top-2 left-2 sm:left-6 z-10 group"
+          >
+            {/* Paper clip */}
+            <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-6 h-8 border-2 border-zinc-400 dark:border-zinc-300 rounded-full z-20 pointer-events-none group-hover:-translate-y-0.5 transition-transform"></div>
+
+            {/* Photo slot */}
+            <div className="aspect-[4/3] rounded-lg bg-gradient-to-br from-violet-950 via-indigo-900 to-black flex flex-col justify-end p-3 text-white overflow-hidden relative shadow-inner">
+              <div className="absolute inset-0 opacity-40 bg-grid-pattern"></div>
+              {/* Telemetry wave graphic */}
+              <div className="absolute top-2 right-2 flex items-center gap-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-violet-400 animate-ping"></span>
+                <span className="text-[9px] font-mono text-violet-300">EPOCH 400</span>
+              </div>
+              <span className="text-[10px] font-mono text-violet-300 relative z-10">DJSCE AI/ML LAB</span>
+              <span className="text-xs font-bold font-sans relative z-10">Model Training Room</span>
             </div>
-            <div className="text-zinc-100 font-bold text-base font-sans">{educationInfo.cgpa}</div>
-            <div className="text-zinc-500 text-[11px]">SVKM's DJSCE • AI &amp; ML</div>
+            <p className="font-hand text-base text-zinc-700 dark:text-zinc-300 text-center mt-2.5 -rotate-1">
+              usually thinking about loss curves
+            </p>
           </div>
 
-          <div className="space-y-1">
-            <div className="text-zinc-500 text-[11px] uppercase tracking-wider">Honours Degree</div>
-            <div className="text-zinc-100 font-bold text-base font-sans">Quantitative Finance</div>
-            <div className="text-zinc-500 text-[11px]">Fintech &amp; Statistical Models</div>
+          {/* Picture Template 2 (Top-Right, tilted +8deg) */}
+          <div
+            onClick={() => soundManager.playPop()}
+            className="w-52 sm:w-60 p-3 pb-7 rounded-xl bg-white dark:bg-zinc-900 shadow-2xl border border-zinc-200 dark:border-white/10 transform rotate-8 hover:rotate-0 hover:scale-105 hover:z-30 transition-all duration-300 cursor-pointer absolute top-12 sm:top-8 right-2 sm:right-6 z-15 group"
+          >
+            {/* Paper clip */}
+            <div className="absolute -top-3 right-8 w-6 h-8 border-2 border-zinc-400 dark:border-zinc-300 rounded-full z-20 pointer-events-none group-hover:-translate-y-0.5 transition-transform"></div>
+
+            {/* Photo slot */}
+            <div className="aspect-[4/3] rounded-lg bg-gradient-to-br from-emerald-950 via-zinc-900 to-black flex flex-col justify-end p-3 text-white overflow-hidden relative shadow-inner">
+              <div className="absolute inset-0 opacity-30 bg-grid-pattern"></div>
+              {/* Sensor graphic */}
+              <div className="absolute top-2 right-2 flex items-center gap-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span className="text-[9px] font-mono text-emerald-300">AQI 24 LIVE</span>
+              </div>
+              <span className="text-[10px] font-mono text-emerald-400 relative z-10">AIRSENTINEL 300M</span>
+              <span className="text-xs font-bold font-sans relative z-10">Spatial Sensor Test</span>
+            </div>
+            <p className="font-hand text-base text-zinc-700 dark:text-zinc-300 text-center mt-2.5 rotate-1">
+              a small 300m spatial IoT run
+            </p>
           </div>
 
-          <div className="space-y-1">
-            <div className="text-zinc-500 text-[11px] uppercase tracking-wider">Production Systems</div>
-            <div className="text-zinc-100 font-bold text-base font-sans">03 Complete Platforms</div>
-            <div className="text-zinc-500 text-[11px]">Edge Telemetry, Cloud &amp; NLP</div>
+          {/* Picture Template 3 (Bottom Center, tilted -2deg) */}
+          <div
+            onClick={() => soundManager.playPop()}
+            className="w-54 sm:w-64 p-3 pb-7 rounded-xl bg-white dark:bg-zinc-900 shadow-2xl border border-zinc-200 dark:border-white/10 transform -rotate-2 hover:rotate-0 hover:scale-105 hover:z-30 transition-all duration-300 cursor-pointer absolute bottom-2 sm:bottom-4 left-1/2 -translate-x-1/2 z-20 group"
+          >
+            {/* Washi Masking Tape Accent */}
+            <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-16 h-5 bg-amber-200/80 dark:bg-amber-100/30 backdrop-blur-xs -rotate-2 shadow-xs border-x border-amber-300/40 rounded-xs pointer-events-none"></div>
+
+            {/* Photo slot */}
+            <div className="aspect-[4/3] rounded-lg bg-gradient-to-br from-purple-950 via-zinc-900 to-black flex flex-col justify-end p-3 text-white overflow-hidden relative shadow-inner">
+              <div className="absolute inset-0 opacity-30 bg-grid-pattern"></div>
+              {/* Code glyph */}
+              <div className="absolute top-2 right-2 flex items-center gap-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-violet-400"></span>
+                <span className="text-[9px] font-mono text-violet-300">FULL-STACK</span>
+              </div>
+              <span className="text-[10px] font-mono text-violet-400 relative z-10">SYSTEMS &amp; INTERFACES</span>
+              <span className="text-xs font-bold font-sans relative z-10">Late Night Studio Desk</span>
+            </div>
+            <p className="font-hand text-base text-zinc-700 dark:text-zinc-300 text-center mt-2.5">
+              building tools people love using ☕
+            </p>
           </div>
 
-          <div className="space-y-1">
-            <div className="text-zinc-500 text-[11px] uppercase tracking-wider">Engineering Focus</div>
-            <div className="text-zinc-100 font-bold text-base font-sans">Full-Stack + Applied AI</div>
-            <div className="text-zinc-500 text-[11px]">End-to-End System Design</div>
-          </div>
         </div>
       </div>
-    </section>
+    </header>
   );
 }

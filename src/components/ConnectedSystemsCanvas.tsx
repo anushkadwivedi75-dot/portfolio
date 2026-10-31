@@ -69,6 +69,9 @@ export default function ConnectedSystemsCanvas() {
     const render = () => {
       ctx.clearRect(0, 0, width, height);
 
+      // Check dark mode state dynamically
+      const isDark = document.documentElement.classList.contains('dark');
+
       // Draw faint connections between close nodes
       const maxDist = 130;
       for (let i = 0; i < particles.length; i++) {
@@ -78,11 +81,13 @@ export default function ConnectedSystemsCanvas() {
           const dist = Math.sqrt(dx * dx + dy * dy);
 
           if (dist < maxDist) {
-            const connectionAlpha = (1 - dist / maxDist) * 0.12;
+            const connectionAlpha = (1 - dist / maxDist) * (isDark ? 0.15 : 0.18);
             ctx.beginPath();
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.strokeStyle = `rgba(196, 181, 253, ${connectionAlpha})`;
+            ctx.strokeStyle = isDark
+              ? `rgba(196, 181, 253, ${connectionAlpha})`
+              : `rgba(124, 58, 237, ${connectionAlpha})`;
             ctx.lineWidth = 0.8;
             ctx.stroke();
           }
@@ -116,7 +121,9 @@ export default function ConnectedSystemsCanvas() {
 
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(221, 214, 254, ${p.alpha})`;
+        ctx.fillStyle = isDark
+          ? `rgba(221, 214, 254, ${p.alpha})`
+          : `rgba(124, 58, 237, ${p.alpha * 0.7})`;
         ctx.fill();
       }
 

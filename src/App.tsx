@@ -1,79 +1,52 @@
 import { useState } from 'react';
-import Navbar from './components/Navbar';
 import Hero from './components/Hero';
-import ProjectCard from './components/ProjectCard';
+import WorkExperience from './components/WorkExperience';
+import Snippets from './components/Snippets';
+import AboutBrowser from './components/AboutBrowser';
+import Outro from './components/Outro';
 import ProjectModal from './components/ProjectModal';
-import About from './components/About';
-import Skills from './components/Skills';
-import Leadership from './components/Leadership';
-import Contact from './components/Contact';
 import ResumeModal from './components/ResumeModal';
+import SoundDock from './components/SoundDock';
+import PencilScroller from './components/PencilScroller';
 import { projectsData } from './data/portfolioData';
 import type { Project } from './types';
+import { ThemeProvider } from './context/ThemeContext';
+import { useLenis } from './hooks/useLenis';
 
-export default function App() {
+function MainApp() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [resumeOpen, setResumeOpen] = useState(false);
 
+  // Initialize official Lenis smooth inertia scrolling
+  useLenis();
+
   return (
-    <div className="min-h-screen bg-[#08080a] text-[#ededf0] font-sans selection:bg-violet-500/25 selection:text-violet-200 antialiased overflow-x-hidden">
-      {/* Navigation */}
-      <Navbar onOpenResume={() => setResumeOpen(true)} />
+    <div className="min-h-screen bg-[var(--canvas-bg)] text-[var(--canvas-text)] font-sans antialiased selection:bg-red-500/20 selection:text-red-900 transition-colors duration-300 relative">
+      {/* Interactive Vertical Pencil Progress Scroller (Matches Reference Video) */}
+      <PencilScroller />
+
+      {/* Floating Tactile Sound Dock */}
+      <SoundDock />
 
       {/* Main Content Sections */}
       <main>
-        {/* Hero Section */}
+        {/* 00 / Hero Section with Wordmark & Three Editorial Picture Templates */}
         <Hero onOpenResume={() => setResumeOpen(true)} />
 
-        {/* Selected Work Section */}
-        <section id="work" className="py-28 border-b border-white/[0.06] relative">
-          <div className="max-w-6xl mx-auto px-5 sm:px-8 space-y-20">
-            {/* Section Header */}
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-              <div className="space-y-3">
-                <div className="flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-violet-400"></span>
-                  <span className="text-xs font-mono uppercase tracking-widest text-violet-400 font-semibold">
-                    01 / Selected Production Systems
-                  </span>
-                </div>
-                <h2 className="text-3xl sm:text-5xl font-bold text-zinc-100 font-sans tracking-tight">
-                  Selected{' '}
-                  <span className="font-editorial italic font-normal text-violet-300 tracking-normal px-1">
-                    architectures
-                  </span>{' '}
-                  &amp; systems.
-                </h2>
-              </div>
-              <p className="text-zinc-400 max-w-md text-sm font-light leading-relaxed">
-                Substantial case studies spanning spatial hardware telemetry, distributed cloud storage, and applied retrieval-augmented NLP.
-              </p>
-            </div>
+        {/* 01 / Unified Work Experience: Sequential Word Reveal -> Headset Zoom -> Direct Gliding Project Rail in Headset */}
+        <WorkExperience
+          projects={projectsData}
+          onOpenModal={(proj) => setSelectedProject(proj)}
+        />
 
-            {/* Project Showcase List */}
-            <div className="space-y-20">
-              {projectsData.map((project) => (
-                <ProjectCard
-                  key={project.id}
-                  project={project}
-                  onOpenModal={(proj) => setSelectedProject(proj)}
-                />
-              ))}
-            </div>
-          </div>
-        </section>
+        {/* 02 / The Work Between Case Studies: Topographic Peaks + UI Snippets + Phone Carousel */}
+        <Snippets />
 
-        {/* About & Education Section */}
-        <About />
+        {/* 03 / Desktop Browser OS Window: About, Work Log, Journeys, Playlist, Gallery */}
+        <AboutBrowser onOpenResume={() => setResumeOpen(true)} />
 
-        {/* Technical Skills Matrix */}
-        <Skills />
-
-        {/* Leadership & Extracurriculars */}
-        <Leadership />
-
-        {/* Contact & Footer Section */}
-        <Contact onOpenResume={() => setResumeOpen(true)} />
+        {/* Outro Sign-off with Summit Curve, K2 quote, Resume button & Giant Email */}
+        <Outro onOpenResume={() => setResumeOpen(true)} />
       </main>
 
       {/* Technical Deep Dive Case Study Modal */}
@@ -88,5 +61,13 @@ export default function App() {
         onClose={() => setResumeOpen(false)}
       />
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <ThemeProvider>
+      <MainApp />
+    </ThemeProvider>
   );
 }

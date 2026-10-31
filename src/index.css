@@ -1,17 +1,20 @@
 @import "tailwindcss";
 
+@variant dark (&:where(.dark, .dark *));
+
 @theme {
   --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-serif: 'Instrument Serif', Georgia, serif;
   --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
-  --color-canvas: #08080a;
-  --color-surface: #0c0d12;
-  --color-surface-elevated: #13141c;
-  --color-surface-hover: #171822;
-  --color-border-subtle: rgba(255, 255, 255, 0.07);
-  --color-border-accent: rgba(167, 139, 250, 0.25);
+  --color-canvas-dark: #08080a;
+  --color-surface-dark: #0c0d13;
+  --color-elevated-dark: #12131c;
   
+  --color-canvas-light: #f4f3ee;
+  --color-surface-light: #ffffff;
+  --color-elevated-light: #eae8e1;
+
   --color-lavender-subtle: #ddd6fe;
   --color-lavender-muted: #c4b5fd;
   --color-lavender-accent: #a78bfa;
@@ -19,72 +22,398 @@
 }
 
 :root {
-  color-scheme: dark;
+  --font-sans: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+  --font-serif: "Instrument Serif", Georgia, serif;
+  --font-mono: "JetBrains Mono", monospace;
+  --font-hand: "Caveat", cursive;
+
+  --color-paper: #f1f0eb;
+  --color-paper-raised: #ffffff;
+  --color-ink: #22241f;
+  --color-ink-dim: #6e7067;
+  --color-line: #d4d3c9;
+  --color-void: #0a0a0e;
+  --color-void-line: #22222d;
+  --color-fog: #f4f4f7;
+  --color-fog-dim: #9898a6;
+  --color-fog-faint: #5e5e6e;
+  --color-accent: #e04428;
+  --color-lavender: #8b5cf6;
+
+  --canvas-bg: var(--color-paper);
+  --canvas-text: var(--color-ink);
+
+  --stage-vh: 1vh;
+  --work-card-w: clamp(760px, 71vw, 1220px);
+  --work-gap: 5.5rem;
+  --work-radius: 1.1rem;
+}
+
+.dark {
+  --color-paper: #0b0c11;
+  --color-paper-raised: #12131c;
+  --color-ink: #ededf2;
+  --color-ink-dim: #8b8c98;
+  --color-line: #202230;
+  --canvas-bg: #09090d;
+  --canvas-text: #ededf2;
+}
+
+/* IMPORTANT: Use overflow-x: clip so position: sticky is NEVER broken */
+html, body {
+  overflow-x: clip;
+}
+
+/* Lenis Smooth Scroll Configuration */
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
 }
 
 html {
   font-family: var(--font-sans);
-  background-color: #08080a;
-  color: #ededf0;
+  background-color: var(--canvas-bg);
+  color: var(--canvas-text);
+  scroll-behavior: smooth;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 body {
   margin: 0;
-  overflow-x: hidden;
-  background-color: #08080a;
-  color: #ededf0;
+  background-color: var(--canvas-bg);
+  color: var(--canvas-text);
 }
 
-/* Explicit editorial typography utility */
 .font-editorial {
   font-family: 'Instrument Serif', Georgia, serif;
 }
 
-/* Subtle architectural grid pattern */
-.bg-grid-pattern {
-  background-size: 48px 48px;
-  background-image: 
-    linear-gradient(to right, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+.font-hand {
+  font-family: 'Caveat', cursive, sans-serif;
 }
 
-.bg-dot-pattern {
-  background-size: 24px 24px;
-  background-image: radial-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+/* Paper grain texture */
+.paper-grain {
+  background-image: radial-gradient(rgba(120, 110, 100, 0.08) 1px, transparent 1px);
+  background-size: 20px 20px;
 }
 
-/* Radial dark vignette fade */
-.radial-fade {
-  mask-image: radial-gradient(ellipse at center, rgba(0, 0, 0, 1) 40%, rgba(0, 0, 0, 0) 80%);
-  -webkit-mask-image: radial-gradient(ellipse at center, rgba(0, 0, 0, 1) 40%, rgba(0, 0, 0, 0) 80%);
+.dark .paper-grain {
+  background-image: radial-gradient(rgba(167, 139, 250, 0.06) 1px, transparent 1px);
+}
+
+/* Squiggle Keyframes */
+@keyframes squiggle-draw {
+  0% { stroke-dashoffset: 320px; }
+  100% { stroke-dashoffset: 0; }
+}
+
+.animate-squiggle {
+  stroke-dasharray: 320;
+  stroke-dashoffset: 0;
+  animation: squiggle-draw 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Vinyl Spin */
+@keyframes vinyl-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.animate-vinyl {
+  animation: vinyl-spin 14s linear infinite;
+}
+
+/* ========================================================
+   SAMAY MAURYA WORK RAIL & TRANSITIONS
+   ======================================================== */
+.work-scroll {
+  height: calc(100vh + var(--work-travel, 3200px));
+  background: var(--color-void);
+  position: relative;
+  will-change: height;
+}
+
+.work-stage {
+  height: 100vh;
+  background: var(--color-void);
+  color: var(--color-fog);
+  position: sticky;
+  top: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  z-index: 10;
+}
+
+.work-stage-label {
+  z-index: 20;
+  color: var(--color-fog-faint);
+  pointer-events: none;
+  margin: 0;
+  position: absolute;
+  top: 2rem;
+  left: 2.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.work-stage-skip {
+  z-index: 20;
+  color: var(--color-fog-faint);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  font-size: 11px;
+  font-family: var(--font-mono);
+  transition: color 0.16s ease;
+  position: absolute;
+  bottom: 2rem;
+  right: 2.5rem;
+  cursor: pointer;
+}
+
+.work-stage-skip:hover {
+  color: #c4b5fd;
+}
+
+.work-rail-track {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.work-rail {
+  align-items: center;
+  gap: var(--work-gap);
+  width: max-content;
+  height: 100%;
+  padding-inline: calc((100vw - var(--work-card-w)) / 2);
+  background: var(--color-void);
+  display: flex;
+  will-change: transform;
+}
+
+.work-card-item {
+  width: var(--work-card-w);
+  flex-shrink: 0;
+  text-decoration: none;
+}
+
+/* Touch/Mobile fallback for small screens (under 640px) */
+@media (max-width: 639px) {
+  .work-scroll {
+    height: auto !important;
+    background: transparent !important;
+  }
+  .work-stage {
+    height: auto !important;
+    position: static !important;
+    overflow: visible !important;
+    background: transparent !important;
+    padding-block: 3.5rem !important;
+  }
+  .work-rail-track {
+    overflow: visible !important;
+  }
+  .work-rail {
+    flex-direction: column !important;
+    width: 100% !important;
+    padding-inline: 1.25rem !important;
+    gap: 3.5rem !important;
+    background: transparent !important;
+    transform: none !important;
+  }
+  .work-card-item {
+    width: 100% !important;
+  }
+  .work-stage-label,
+  .work-stage-skip {
+    position: static !important;
+    margin-bottom: 1.25rem !important;
+  }
+}
+
+/* Floating cursor preview */
+.more-preview {
+  z-index: 50;
+  aspect-ratio: 4/3;
+  pointer-events: none;
+  will-change: transform;
+  width: clamp(220px, 20vw, 320px);
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+/* ========================================================
+   PENCIL PROGRESS SCROLLER (EXACT REFERENCE STYLING)
+   ======================================================== */
+.pencil-progress {
+  --pencil-progress: 0;
+  --pencil-ink: var(--color-ink);
+  --pencil-guide: var(--color-line);
+  --pencil-paper: var(--color-paper);
+  --pencil-mark: var(--color-accent);
+  z-index: 60;
+  right: max(16px, env(safe-area-inset-right));
+  width: 28px;
+  color: var(--pencil-ink);
+  pointer-events: none;
+  user-select: none;
+  transition: color 0.18s ease;
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.pencil-progress[data-dark="true"] {
+  --pencil-ink: #c0c0b6;
+  --pencil-guide: #454440;
+  --pencil-paper: var(--color-void);
+  --pencil-mark: #e04428;
+}
+
+.pencil-progress-art {
+  padding-top: 37px;
+}
+
+.pencil-progress-track {
+  height: clamp(140px, 20vh, 190px);
+  position: relative;
+}
+
+.pencil-progress-guide,
+.pencil-progress-stroke {
+  background: var(--pencil-guide);
+  width: 1px;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(50% - 0.5px);
+}
+
+.pencil-progress-stroke {
+  background: var(--pencil-mark);
+  transform: scaleY(var(--pencil-progress));
+  transform-origin: top;
+}
+
+.pencil-progress-stop {
+  background: var(--pencil-guide);
+  width: 5px;
+  height: 1px;
+  position: absolute;
+  left: calc(50% - 2.5px);
+}
+
+.pencil-progress-stop[data-passed="true"] {
+  background: var(--pencil-mark);
+}
+
+.pencil-progress-pencil {
+  width: 28px;
+  height: 40px;
+  position: absolute;
+  top: -37px;
+  left: 0;
+  will-change: transform;
+}
+
+.pencil-progress-pencil svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.pencil-progress-body,
+.pencil-progress-tip {
+  fill: var(--pencil-paper);
+}
+
+.pencil-progress-cap,
+.pencil-progress-graphite {
+  fill: currentColor;
+  stroke: none;
+}
+
+.pencil-progress-seam {
+  stroke: var(--pencil-mark);
+  stroke-width: 1px;
+}
+
+.pencil-progress-finish {
+  width: 100%;
+  height: 12px;
+  color: var(--pencil-mark);
+  margin-top: 8px;
+  display: block;
+}
+
+.pencil-progress-finish path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1px;
+  opacity: 0;
+  transition: stroke-dashoffset 0.18s, opacity 0.1s;
+}
+
+.pencil-progress[data-arrived="true"] .pencil-progress-finish path {
+  stroke-dashoffset: 0;
+  opacity: 1;
+}
+
+.pencil-progress-number {
+  font-family: var(--font-sans);
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+  margin-top: 6px;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1;
+  display: block;
+}
+
+@media (max-width: 1023px) {
+  .pencil-progress {
+    display: none;
+  }
 }
 
 /* Custom minimal scrollbar */
 ::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #08080a;
+  background: var(--canvas-bg);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #232329;
+  background: #33333d;
   border-radius: 9999px;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: #383842;
+.light ::-webkit-scrollbar-thumb {
+  background: #d4d0e2;
 }
 
-/* Subtle focus outlines */
-:focus-visible {
-  outline: 2px solid rgba(167, 139, 250, 0.6);
-  outline-offset: 2px;
-}
-
-/* Reduced motion preference */
 @media (prefers-reduced-motion: reduce) {
   *,
   ::before,

@@ -1,4 +1,12 @@
-import type { PersonalInfo, Education, Project, SkillItem, LeadershipRole } from '../types';
+import type {
+  PersonalInfo,
+  Education,
+  Project,
+  SkillItem,
+  LeadershipRole,
+  AchievementItem,
+  AdditionalProject
+} from '../types';
 
 export const personalInfo: PersonalInfo = {
   name: 'Anushka Dwivedi',
@@ -163,119 +171,8 @@ def detect_sensor_anomalies(rolling_window_df, contamination=0.03):
     }
   },
   {
-    id: 'clouddrive',
-    number: '02',
-    title: 'Cloud Drive Clone',
-    subtitle: 'Full-Stack Distributed Cloud Storage Platform',
-    category: 'Full-Stack Cloud Architecture',
-    timeline: '2025',
-    shortDescription:
-      'A full-stack cloud storage platform with Google OAuth, resumable multi-file uploads, nested folders, drag-and-drop, and synchronized cloud storage operations.',
-    problem:
-      'Modern cloud storage requires handling unpredictable network connections during massive multi-file uploads, maintaining deterministic nested folder directory structures, and preventing UI freezing or inconsistent states during concurrent cloud mutation operations.',
-    approach:
-      'Built a reactive single-page architecture using React and Tailwind CSS backed by Firebase Authentication and Firebase Storage. Implemented a chunked, resumable upload state machine with concurrent queue throttling, deterministic folder path recursion, drag-and-drop file ingestion, and real-time state synchronization.',
-    technologies: [
-      'React',
-      'TypeScript',
-      'JavaScript',
-      'Firebase Authentication',
-      'Firebase Storage',
-      'Tailwind CSS',
-      'CSS3'
-    ],
-    keyHighlights: [
-      'Resumable Multi-File Uploads: Chunked upload tracking with pause, resume, and retry capability during unexpected network interruptions.',
-      'Deterministic Nested Folder Hierarchy: Recursive folder path management allowing deep navigation, folder creation, and relational breadcrumbs.',
-      'Google OAuth & Secure Storage: Role-based storage security rules tied to authenticated user IDs ensuring zero cross-tenant leakage.',
-      'Drag-and-Drop Ingestion: Custom dropzone handling single files, multi-file batches, and folder structures with instantaneous client-side progress bars.',
-      'Synchronized Cloud Operations: Live metadata updates, inline file renaming, search-as-you-type, and direct URL asset retrieval.'
-    ],
-    architecture: {
-      overview:
-        'Client-centric reactive cloud storage system utilizing Firebase serverless storage buckets with asynchronous chunked stream ingestion and atomic state reconciliation.',
-      layers: [
-        {
-          layer: 'Client UI & State',
-          tools: ['React', 'TypeScript', 'Tailwind CSS'],
-          purpose: 'Interactive folder tree, drag-and-drop zone, live upload progress widgets, breadcrumb routing.'
-        },
-        {
-          layer: 'Auth & Access Control',
-          tools: ['Firebase Auth', 'Google OAuth 2.0'],
-          purpose: 'Token generation, session persistence, secure storage bucket path namespace isolation.'
-        },
-        {
-          layer: 'Storage & Synchronization',
-          tools: ['Firebase Storage API', 'Upload Tasks'],
-          purpose: 'Resumable byte chunk streaming, upload task snapshots, download URL signing, file deletion.'
-        }
-      ],
-      schemaOrSnippet: {
-        language: 'javascript',
-        title: 'Resumable Upload Task State Controller',
-        code: `// Resumable upload chunk handler with state feedback
-const uploadFileWithProgress = (file, currentFolderId, userId) => {
-  const storageRef = ref(storage, \`users/\${userId}/\${currentFolderId}/\${file.name}\`);
-  const uploadTask = uploadBytesResumable(storageRef, file);
-
-  uploadTask.on(
-    'state_changed',
-    (snapshot) => {
-      const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-      updateUploadQueue(file.name, {
-        progress: Math.round(progress),
-        bytesUploaded: snapshot.bytesTransferred,
-        totalBytes: snapshot.totalBytes,
-        status: snapshot.state // 'running' | 'paused' | 'success'
-      });
-    },
-    (error) => handleUploadFailure(file.name, error),
-    async () => {
-      const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-      await persistFileMetadata({
-        name: file.name,
-        size: file.size,
-        folderId: currentFolderId,
-        url: downloadURL,
-        createdAt: new Date().toISOString()
-      });
-    }
-  );
-};`
-      }
-    },
-    metricsOrFeatures: [
-      {
-        label: 'Upload Reliability',
-        value: 'Resumable',
-        description: 'Auto-retries on network drop with byte position recovery'
-      },
-      {
-        label: 'Directory Tree',
-        value: 'N-Levels',
-        description: 'Recursive nested directory hierarchy with breadcrumb sync'
-      },
-      {
-        label: 'Authentication',
-        value: 'OAuth 2.0',
-        description: 'Google single-sign-on with scoped user bucket security'
-      },
-      {
-        label: 'Client Latency',
-        value: 'Optimistic',
-        description: 'Instantaneous UI feedback on folder ops before cloud ACK'
-      }
-    ],
-    links: {
-      githubUrl: 'https://github.com/anushkadwivedi75',
-      isMockup: false,
-      notice: 'Production demo link and codebase configured for authorized access.'
-    }
-  },
-  {
     id: 'legalsimplifier',
-    number: '03',
+    number: '02',
     title: 'Legal Simplifier AI',
     subtitle: 'AI-Powered Contract Analysis & Plain-Language Intelligence',
     category: 'Applied NLP & Document Intelligence',
@@ -385,49 +282,286 @@ Return strictly in valid JSON matching ClauseAnalysisResult.
       isMockup: false,
       notice: 'Demo platform and repository available upon request / in active development.'
     }
+  },
+  {
+    id: 'clouddrive',
+    number: '03',
+    title: 'Cloud Drive Clone',
+    subtitle: 'Full-Stack Distributed Cloud Storage Platform',
+    category: 'Full-Stack Cloud Architecture',
+    timeline: '2025',
+    shortDescription:
+      'A full-stack cloud storage platform with Google OAuth, resumable multi-file uploads, nested folders, drag-and-drop, and synchronized cloud storage operations.',
+    problem:
+      'Modern cloud storage requires handling unpredictable network connections during massive multi-file uploads, maintaining deterministic nested folder directory structures, and preventing UI freezing or inconsistent states during concurrent cloud mutation operations.',
+    approach:
+      'Built a reactive single-page architecture using React and Tailwind CSS backed by Firebase Authentication and Firebase Storage. Implemented a chunked, resumable upload state machine with concurrent queue throttling, deterministic folder path recursion, drag-and-drop file ingestion, and real-time state synchronization.',
+    technologies: [
+      'React',
+      'TypeScript',
+      'JavaScript',
+      'Firebase Authentication',
+      'Firebase Storage',
+      'Tailwind CSS',
+      'CSS3'
+    ],
+    keyHighlights: [
+      'Resumable Multi-File Uploads: Chunked upload tracking with pause, resume, and retry capability during unexpected network interruptions.',
+      'Deterministic Nested Folder Hierarchy: Recursive folder path management allowing deep navigation, folder creation, and relational breadcrumbs.',
+      'Google OAuth & Secure Storage: Role-based storage security rules tied to authenticated user IDs ensuring zero cross-tenant leakage.',
+      'Drag-and-Drop Ingestion: Custom dropzone handling single files, multi-file batches, and folder structures with instantaneous client-side progress bars.',
+      'Synchronized Cloud Operations: Live metadata updates, inline file renaming, search-as-you-type, and direct URL asset retrieval.'
+    ],
+    architecture: {
+      overview:
+        'Client-centric reactive cloud storage system utilizing Firebase serverless storage buckets with asynchronous chunked stream ingestion and atomic state reconciliation.',
+      layers: [
+        {
+          layer: 'Client UI & State',
+          tools: ['React', 'TypeScript', 'Tailwind CSS'],
+          purpose: 'Interactive folder tree, drag-and-drop zone, live upload progress widgets, breadcrumb routing.'
+        },
+        {
+          layer: 'Auth & Access Control',
+          tools: ['Firebase Auth', 'Google OAuth 2.0'],
+          purpose: 'Token generation, session persistence, secure storage bucket path namespace isolation.'
+        },
+        {
+          layer: 'Storage & Synchronization',
+          tools: ['Firebase Storage API', 'Upload Tasks'],
+          purpose: 'Resumable byte chunk streaming, upload task snapshots, download URL signing, file deletion.'
+        }
+      ],
+      schemaOrSnippet: {
+        language: 'javascript',
+        title: 'Resumable Upload Task State Controller',
+        code: `// Resumable upload chunk handler with state feedback
+const uploadFileWithProgress = (file, currentFolderId, userId) => {
+  const storageRef = ref(storage, \`users/\${userId}/\${currentFolderId}/\${file.name}\`);
+  const uploadTask = uploadBytesResumable(storageRef, file);
+
+  uploadTask.on(
+    'state_changed',
+    (snapshot) => {
+      const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+      updateUploadQueue(file.name, {
+        progress: Math.round(progress),
+        bytesUploaded: snapshot.bytesTransferred,
+        totalBytes: snapshot.totalBytes,
+        status: snapshot.state // 'running' | 'paused' | 'success'
+      });
+    },
+    (error) => handleUploadFailure(file.name, error),
+    async () => {
+      const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+      await persistFileMetadata({
+        name: file.name,
+        size: file.size,
+        folderId: currentFolderId,
+        url: downloadURL,
+        createdAt: new Date().toISOString()
+      });
+    }
+  );
+};`
+      }
+    },
+    metricsOrFeatures: [
+      {
+        label: 'Upload Reliability',
+        value: 'Resumable',
+        description: 'Auto-retries on network drop with byte position recovery'
+      },
+      {
+        label: 'Directory Tree',
+        value: 'N-Levels',
+        description: 'Recursive nested directory hierarchy with breadcrumb sync'
+      },
+      {
+        label: 'Authentication',
+        value: 'OAuth 2.0',
+        description: 'Google single-sign-on with scoped user bucket security'
+      },
+      {
+        label: 'Client Latency',
+        value: 'Optimistic',
+        description: 'Instantaneous UI feedback on folder ops before cloud ACK'
+      }
+    ],
+    links: {
+      githubUrl: 'https://github.com/anushkadwivedi75',
+      isMockup: false,
+      notice: 'Production demo link and codebase configured for authorized access.'
+    }
+  },
+  {
+    id: 'satsa',
+    number: '04',
+    title: 'SAT-SA',
+    subtitle: 'Supervisory Analytics Platform for Security Operations Assessment',
+    category: 'Security Analytics & Explainable AI',
+    timeline: '2025 – 2026',
+    shortDescription:
+      'A supervisory analytics platform for SOC assessment, integrating real-time telemetry streaming, MITRE ATT&CK tactical correlation, automated investigation workflows, and explainable incident analysis.',
+    problem:
+      'Modern Security Operations Centers (SOC) suffer from severe alert fatigue, processing thousands of unlinked SIEM alerts daily. Disconnected event streams obscure multi-stage attacks like Kerberoasting or lateral movement, while black-box threat detection fails to provide explainable rationale needed for rapid containment.',
+    approach:
+      'Engineered an intelligent supervisory telemetry platform combining real-time log ingestion, graph-based causal event correlation, and MITRE ATT&CK framework mapping. Embedded an explainable attribution engine providing SOC analysts with transparent feature weights, entity risk timelines, and structured containment playbooks.',
+    technologies: [
+      'Python',
+      'FastAPI',
+      'React',
+      'TypeScript',
+      'Tailwind CSS',
+      'PostgreSQL',
+      'Elasticsearch',
+      'scikit-learn',
+      'Docker'
+    ],
+    keyHighlights: [
+      'Graph-Based Causal Incident Correlation: Clusters disparate endpoint, network, and identity events into coherent attack chains.',
+      'MITRE ATT&CK Kill-Chain Mapping: Automatically correlates indicators of compromise (IoCs) across 14 tactics including Initial Access, Privilege Escalation, and Exfiltration.',
+      'Explainable Risk Scoring: Decomposes black-box severity scores into transparent feature attributions (SHAP/LIME-inspired) to justify triage priority.',
+      'Automated Analyst Triage Workflows: One-click containment playbooks including host isolation, credential revocation, and process quarantine.',
+      'Real-Time Telemetry Stream: High-throughput async ingestion pipeline handling telemetry streams with sub-second analytical feedback.'
+    ],
+    architecture: {
+      overview:
+        'End-to-end security analytics architecture aggregating multi-source audit logs, streaming through a causal graph correlation pipeline, and generating explainable analyst dashboards.',
+      layers: [
+        {
+          layer: 'Telemetry Ingestion & Filtering',
+          tools: ['FastAPI', 'Elasticsearch', 'Docker'],
+          purpose: 'High-throughput ingestion of Windows Event Logs, Sysmon, and network flow packets with schema normalization.'
+        },
+        {
+          layer: 'Causal Correlation Engine',
+          tools: ['Python', 'NetworkX', 'Graph Data Structures'],
+          purpose: 'Builds directed acyclic graphs (DAGs) linking process ancestry, IP connections, and credential mutations.'
+        },
+        {
+          layer: 'Explainability & Scoring Model',
+          tools: ['scikit-learn', 'Feature Attribution', 'PostgreSQL'],
+          purpose: 'Calculates multi-dimensional risk index and extracts explainable risk rationales for SOC analysts.'
+        },
+        {
+          layer: 'Supervisory Command Console',
+          tools: ['React', 'TypeScript', 'Tailwind CSS'],
+          purpose: 'Interactive attack matrix visualizer, live incident triage stream, and playbook execution console.'
+        }
+      ],
+      schemaOrSnippet: {
+        language: 'python',
+        title: 'Causal Incident Correlation & Explainability Scorer',
+        code: `class IncidentCorrelationEngine:
+    def __init__(self, mitre_matrix, risk_threshold=0.75):
+        self.mitre = mitre_matrix
+        self.risk_threshold = risk_threshold
+
+    def evaluate_telemetry_cluster(self, entity_events: list) -> dict:
+        """
+        Evaluates multi-source telemetry events across an identity or host
+        to calculate explainable risk attribution and ATT&CK mapping.
+        """
+        tactics_hit = set(e['tactic'] for e in entity_events if 'tactic' in e)
+        temporal_span = max(e['timestamp'] for e in entity_events) - min(e['timestamp'] for e in entity_events)
+        
+        # Risk factors: cross-tactic progression + privileged asset weighting
+        severity_score = min(1.0, (len(tactics_hit) * 0.22) + (len(entity_events) * 0.04))
+        
+        return {
+            'is_high_priority': severity_score >= self.risk_threshold,
+            'composite_risk_score': round(severity_score * 100, 1),
+            'tactics_covered': list(tactics_hit),
+            'explainable_rationale': [
+                f"Multi-stage progression across {len(tactics_hit)} ATT&CK tactics",
+                f"Compressed temporal velocity ({round(temporal_span.total_seconds() / 60, 1)} minutes)",
+                "Privileged security context elevation detected on host asset"
+            ]
+        }`
+      }
+    },
+    metricsOrFeatures: [
+      {
+        label: 'Triage Reduction',
+        value: '70%',
+        description: 'Causal alert clustering reduces individual analyst tickets'
+      },
+      {
+        label: 'ATT&CK Coverage',
+        value: '14 Tactics',
+        description: 'Complete MITRE Enterprise kill-chain tactical mapping'
+      },
+      {
+        label: 'Explainability',
+        value: 'Feature-Level',
+        description: 'Transparent rationales for every priority elevation'
+      },
+      {
+        label: 'Ingestion Latency',
+        value: '< 500ms',
+        description: 'Sub-second telemetry processing & alert correlation'
+      }
+    ],
+    links: {
+      githubUrl: 'https://github.com/anushkadwivedi75',
+      isMockup: false,
+      notice: 'Platform specifications and security analytics architecture available for review.'
+    }
   }
 ];
 
 export const skillsList: SkillItem[] = [
-  // Programming
-  { name: 'C/C++', category: 'Programming', isKey: true },
-  { name: 'Python', category: 'Programming', isKey: true },
-  { name: 'Java', category: 'Programming', isKey: true },
-  { name: 'JavaScript', category: 'Programming', isKey: true },
-  { name: 'HTML5', category: 'Programming' },
-  { name: 'CSS3', category: 'Programming' },
-  { name: 'SQL', category: 'Programming', isKey: true },
-  { name: 'TypeScript', category: 'Programming', isKey: true },
+  // 1. Programming Languages
+  { name: 'Python', category: 'Programming Languages', isKey: true },
+  { name: 'C / C++', category: 'Programming Languages', isKey: true },
+  { name: 'Java', category: 'Programming Languages', isKey: true },
+  { name: 'JavaScript (ES6+)', category: 'Programming Languages', isKey: true },
+  { name: 'TypeScript', category: 'Programming Languages', isKey: true },
+  { name: 'SQL', category: 'Programming Languages', isKey: true },
+  { name: 'HTML5 & CSS3', category: 'Programming Languages' },
 
-  // Web Development
-  { name: 'ReactJS', category: 'Web Development', isKey: true },
-  { name: 'FastAPI', category: 'Web Development', isKey: true },
-  { name: 'Express.js', category: 'Web Development', isKey: true },
-  { name: 'Next.js', category: 'Web Development', isKey: true },
-  { name: 'Tailwind CSS', category: 'Web Development', isKey: true },
-  { name: 'Bootstrap', category: 'Web Development' },
-  { name: 'Node.js', category: 'Web Development', isKey: true },
-  { name: 'REST APIs', category: 'Web Development', isKey: true },
+  // 2. Frontend Development
+  { name: 'React', category: 'Frontend Development', isKey: true },
+  { name: 'Next.js', category: 'Frontend Development', isKey: true },
+  { name: 'Tailwind CSS', category: 'Frontend Development', isKey: true },
+  { name: 'Responsive Layouts', category: 'Frontend Development' },
+  { name: 'State Management', category: 'Frontend Development' },
+  { name: 'Component Systems', category: 'Frontend Development', isKey: true },
 
-  // Developer Tools & Platforms
-  { name: 'Git', category: 'Developer Tools & Platforms', isKey: true },
-  { name: 'GitHub', category: 'Developer Tools & Platforms', isKey: true },
-  { name: 'Docker', category: 'Developer Tools & Platforms', isKey: true },
-  { name: 'VS Code', category: 'Developer Tools & Platforms' },
-  { name: 'Figma', category: 'Developer Tools & Platforms' },
-  { name: 'Firebase', category: 'Developer Tools & Platforms', isKey: true },
-  { name: 'Supabase', category: 'Developer Tools & Platforms' },
-  { name: 'MongoDB', category: 'Developer Tools & Platforms' },
+  // 3. Backend Development
+  { name: 'FastAPI', category: 'Backend Development', isKey: true },
+  { name: 'Node.js', category: 'Backend Development', isKey: true },
+  { name: 'Express.js', category: 'Backend Development' },
+  { name: 'RESTful Architecture', category: 'Backend Development', isKey: true },
+  { name: 'Async Ingestion', category: 'Backend Development' },
+  { name: 'JWT & OAuth Auth', category: 'Backend Development', isKey: true },
 
-  // AI & Data
-  { name: 'PostgreSQL', category: 'AI & Data', isKey: true },
-  { name: 'PostGIS', category: 'AI & Data', isKey: true },
-  { name: 'scikit-learn', category: 'AI & Data', isKey: true },
-  { name: 'SQLite', category: 'AI & Data' },
-  { name: 'Vector Databases', category: 'AI & Data', isKey: true },
-  { name: 'ESP32 / BLE', category: 'AI & Data' },
-  { name: 'Flutter', category: 'AI & Data' },
-  { name: 'LLM Prompt Engineering', category: 'AI & Data', isKey: true }
+  // 4. AI & Machine Learning
+  { name: 'scikit-learn', category: 'AI & Machine Learning', isKey: true },
+  { name: 'PostGIS Spatial ML', category: 'AI & Machine Learning', isKey: true },
+  { name: 'Isolation Forest Anomaly', category: 'AI & Machine Learning', isKey: true },
+  { name: 'Vector Databases', category: 'AI & Machine Learning', isKey: true },
+  { name: 'RAG Pipeline Design', category: 'AI & Machine Learning', isKey: true },
+  { name: 'LLM Prompt Engineering', category: 'AI & Machine Learning', isKey: true },
+  { name: 'Data Preprocessing', category: 'AI & Machine Learning' },
+
+  // 5. Databases & Tools
+  { name: 'PostgreSQL', category: 'Databases & Tools', isKey: true },
+  { name: 'PostGIS', category: 'Databases & Tools', isKey: true },
+  { name: 'Firebase & Firestore', category: 'Databases & Tools', isKey: true },
+  { name: 'SQLite', category: 'Databases & Tools' },
+  { name: 'MongoDB', category: 'Databases & Tools' },
+  { name: 'Git & GitHub', category: 'Databases & Tools', isKey: true },
+  { name: 'VS Code & Linux CLI', category: 'Databases & Tools' },
+
+  // 6. Development Platforms
+  { name: 'Docker', category: 'Development Platforms', isKey: true },
+  { name: 'Flutter (Mobile)', category: 'Development Platforms', isKey: true },
+  { name: 'ESP32 & BLE GATT', category: 'Development Platforms', isKey: true },
+  { name: 'Figma', category: 'Development Platforms' },
+  { name: 'Supabase', category: 'Development Platforms' },
+  { name: 'Vite & Modern Bundlers', category: 'Development Platforms' }
 ];
 
 export const leadershipExperience: LeadershipRole[] = [
@@ -456,5 +590,100 @@ export const leadershipExperience: LeadershipRole[] = [
       'Managed volunteer teams, stage logistics, and participant engagement across flagship campus events.',
       'Cultivated team communication and rapid problem-solving under tight event deadlines.'
     ]
+  }
+];
+
+export const achievementsData: AchievementItem[] = [
+  {
+    id: 'honours-quant',
+    title: 'Honours in Quantitative Finance and Fintech',
+    issuerOrEvent: "SVKM's Dwarkadas J. Sanghvi College of Engineering",
+    period: '2024 – Present',
+    category: 'Academic Honor',
+    description:
+      'Selected for the rigorous departmental Honours track specializing in mathematical finance, algorithmic modeling, financial derivatives, and quantitative risk systems.',
+    highlights: [
+      'Curriculum integrates financial engineering, stochastic processes, and high-frequency data structures.',
+      'Maintained consistent academic record with 8.13 CGPA alongside specialized coursework.'
+    ],
+    badgeText: 'Academic Distinction'
+  },
+  {
+    id: 'acm-sigai-leadership',
+    title: 'Executive Board Appointment — VCP Admin',
+    issuerOrEvent: 'DJS ACM SIGAI Student Chapter',
+    period: '2026',
+    category: 'Academic Honor',
+    description:
+      'Appointed to the Core Leadership Executive Board as Vice Chairperson Administrator, entrusted with orchestrating departmental hackathons, workshops, and AI technical incubators.',
+    highlights: [
+      'Spearheads student developer learning paths in applied deep learning, backend pipelines, and cloud computing.',
+      'Fosters collaborative team environments bridging academic theory with production software.'
+    ],
+    badgeText: 'Leadership Distinction'
+  },
+  {
+    id: 'hackathon-innovation',
+    title: 'Technical Hackathon & System Innovation',
+    issuerOrEvent: 'Engineering Innovation Competitions',
+    period: '2025 – 2026',
+    category: 'Competition & Hackathon',
+    description:
+      'Engineered and pitched end-to-end functional prototypes under accelerated hackathon deadlines, emphasizing working hardware-software telemetry and applied NLP.',
+    highlights: [
+      'Demonstrated AirSentinel: Live BLE telemetry ingestion with 300m PostGIS spatial validation.',
+      'Rapid prototype development with production-oriented architectures.'
+    ],
+    badgeText: 'Hackathon Track'
+  },
+  {
+    id: 'cert-ml',
+    title: 'Applied Machine Learning & Distributed Systems',
+    issuerOrEvent: 'Technical Specializations & Verified Coursework',
+    period: '2025',
+    category: 'Certification',
+    description:
+      'Comprehensive technical coursework in supervised & unsupervised learning, anomaly detection, spatial indexing, and distributed API system design.',
+    highlights: [
+      'Applied algorithmic knowledge to real spatial and legal document datasets.',
+      'Strong foundations in data structures, algorithms (C++/Java), and modern web stacks.'
+    ],
+    badgeText: 'Technical Certification'
+  }
+];
+
+export const additionalProjectsData: AdditionalProject[] = [
+  {
+    id: 'quantalpha',
+    title: 'QuantAlpha Portfolio Engine',
+    subtitle: 'Quantitative Portfolio Optimization & Risk Modeling',
+    category: 'Fintech & Quantitative Modeling',
+    description:
+      'A quantitative analysis tool implementing Modern Portfolio Theory (MPT), Sharpe ratio maximization, Monte Carlo simulation, and Value-at-Risk (VaR) stress testing for equity assets.',
+    technologies: ['Python', 'NumPy', 'Pandas', 'scipy.optimize', 'Matplotlib'],
+    githubUrl: 'https://github.com/anushkadwivedi75',
+    status: 'Completed'
+  },
+  {
+    id: 'finsentiment',
+    title: 'FinSentiment Intelligence',
+    subtitle: 'Financial News Entity & Sentiment Extraction Pipeline',
+    category: 'Applied NLP & Information Extraction',
+    description:
+      'An automated market intelligence service parsing real-time financial headlines to extract company entities and calculate risk-weighted sentiment polarity scores.',
+    technologies: ['Python', 'FastAPI', 'Hugging Face', 'Transformers', 'React'],
+    githubUrl: 'https://github.com/anushkadwivedi75',
+    status: 'In Progress'
+  },
+  {
+    id: 'visiongate',
+    title: 'VisionGate Edge',
+    subtitle: 'Real-Time Edge Computer Vision & Gesture Interface',
+    category: 'Edge Computing & Computer Vision',
+    description:
+      'A low-latency computer vision interface utilizing edge facial landmark detection and gesture tracking for contact-free interaction and automated verification.',
+    technologies: ['Python', 'OpenCV', 'MediaPipe', 'SQLite'],
+    githubUrl: 'https://github.com/anushkadwivedi75',
+    status: 'Completed'
   }
 ];

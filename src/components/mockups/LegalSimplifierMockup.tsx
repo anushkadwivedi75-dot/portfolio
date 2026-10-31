@@ -80,7 +80,7 @@ export default function LegalSimplifierMockup() {
   const activeClause = sampleClauses.find((c) => c.id === selectedClauseId) || sampleClauses[0];
 
   return (
-    <div className="w-full rounded-2xl bg-[#090a0f] border border-white/[0.09] overflow-hidden text-xs shadow-2xl font-sans">
+    <div className="w-full rounded-2xl bg-[#090a0f] border border-zinc-300/80 dark:border-white/[0.09] overflow-hidden text-xs shadow-2xl font-sans">
       {/* Top Application Bar */}
       <div className="bg-[#101118] px-4 py-3 border-b border-white/[0.06] flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-3">

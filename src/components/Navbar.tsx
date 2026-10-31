@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
-import { Menu, X, FileText, ArrowUpRight } from 'lucide-react';
+import { Menu, X, FileText, ArrowUpRight, Sun, Moon } from 'lucide-react';
 import { personalInfo } from '../data/portfolioData';
+import { useTheme } from '../context/ThemeContext';
 
 interface NavbarProps {
   onOpenResume: () => void;
@@ -10,13 +11,14 @@ export default function Navbar({ onOpenResume }: NavbarProps) {
   const [activeSection, setActiveSection] = useState('hero');
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
 
-      const sections = ['hero', 'work', 'about', 'skills', 'leadership', 'contact'];
-      const scrollPosition = window.scrollY + 200;
+      const sections = ['hero', 'work', 'snippets', 'about', 'contact'];
+      const scrollPosition = window.scrollY + 220;
 
       for (const section of sections) {
         const el = document.getElementById(section);
@@ -37,9 +39,8 @@ export default function Navbar({ onOpenResume }: NavbarProps) {
 
   const navLinks = [
     { name: 'Work', href: '#work', id: 'work' },
+    { name: 'Lab', href: '#snippets', id: 'snippets' },
     { name: 'About', href: '#about', id: 'about' },
-    { name: 'Skills', href: '#skills', id: 'skills' },
-    { name: 'Leadership', href: '#leadership', id: 'leadership' },
     { name: 'Contact', href: '#contact', id: 'contact' },
   ];
 
@@ -47,7 +48,7 @@ export default function Navbar({ onOpenResume }: NavbarProps) {
     <header
       className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
         isScrolled
-          ? 'bg-[#09090b]/85 backdrop-blur-md border-b border-white/[0.08] py-3.5 shadow-xl shadow-black/20'
+          ? 'bg-white/80 dark:bg-[#09090b]/85 backdrop-blur-md border-b border-zinc-200/80 dark:border-white/[0.08] py-3.5 shadow-sm dark:shadow-xl dark:shadow-black/20'
           : 'bg-transparent py-5 border-b border-transparent'
       }`}
     >
@@ -55,19 +56,19 @@ export default function Navbar({ onOpenResume }: NavbarProps) {
         {/* Personal Wordmark */}
         <a
           href="#hero"
-          className="group flex items-center gap-2.5 text-zinc-100 hover:text-white transition-colors cursor-pointer"
+          className="group flex items-center gap-2.5 text-zinc-900 dark:text-zinc-100 hover:text-violet-600 dark:hover:text-white transition-colors cursor-pointer"
         >
-          <span className="w-2.5 h-2.5 rounded-full bg-violet-400 group-hover:scale-125 transition-transform"></span>
+          <span className="w-2.5 h-2.5 rounded-full bg-violet-600 dark:bg-violet-400 group-hover:scale-125 transition-transform"></span>
           <span className="font-semibold tracking-tight text-sm sm:text-base font-sans">
             {personalInfo.name}
           </span>
-          <span className="text-[11px] text-zinc-500 font-mono hidden md:inline-block">
-            / AI & Systems
+          <span className="text-[11px] text-zinc-500 dark:text-zinc-400 font-mono hidden md:inline-block">
+            / AI &amp; Systems
           </span>
         </a>
 
-        {/* Desktop Navigation Links */}
-        <nav className="hidden md:flex items-center gap-1 bg-[#13141a]/90 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/[0.08]">
+        {/* Desktop Navigation Links (Capsule Design) */}
+        <nav className="hidden md:flex items-center gap-1 bg-zinc-100/90 dark:bg-[#13141a]/90 backdrop-blur-md px-3 py-1.5 rounded-full border border-zinc-200 dark:border-white/[0.08] shadow-sm">
           {navLinks.map((link) => {
             const isActive = activeSection === link.id;
             return (
@@ -76,8 +77,8 @@ export default function Navbar({ onOpenResume }: NavbarProps) {
                 href={link.href}
                 className={`relative px-3.5 py-1 text-xs font-medium rounded-full transition-all duration-200 ${
                   isActive
-                    ? 'text-white bg-white/[0.08]'
-                    : 'text-zinc-400 hover:text-zinc-200 hover:bg-white/[0.04]'
+                    ? 'text-violet-900 bg-violet-200/60 dark:text-white dark:bg-white/[0.08] font-semibold'
+                    : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 hover:bg-zinc-200/50 dark:hover:bg-white/[0.04]'
                 }`}
               >
                 {link.name}
@@ -86,67 +87,75 @@ export default function Navbar({ onOpenResume }: NavbarProps) {
           })}
         </nav>
 
-        {/* Action Controls: Resume + Mobile Hamburger */}
-        <div className="flex items-center gap-2.5">
+        {/* Action Controls: Theme Switch + Resume + Mobile Hamburger */}
+        <div className="flex items-center gap-2 sm:gap-2.5">
+          {/* Theme Toggle Button */}
+          <button
+            onClick={toggleTheme}
+            aria-label="Toggle theme"
+            className="p-2 rounded-full text-zinc-600 dark:text-zinc-300 bg-zinc-100 dark:bg-zinc-900 hover:bg-zinc-200 dark:hover:bg-zinc-800 border border-zinc-200 dark:border-white/[0.1] transition-all cursor-pointer shadow-sm hover:scale-105"
+            title={`Switch to ${theme === 'dark' ? 'Light' : 'Dark'} Mode`}
+          >
+            {theme === 'dark' ? (
+              <Sun className="w-3.5 h-3.5 text-amber-400 transition-transform rotate-0 hover:rotate-45" />
+            ) : (
+              <Moon className="w-3.5 h-3.5 text-violet-600 transition-transform -rotate-12 hover:rotate-0" />
+            )}
+          </button>
+
+          {/* Resume Trigger */}
           <button
             onClick={onOpenResume}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-zinc-900 hover:bg-zinc-800 text-zinc-200 border border-white/[0.1] hover:border-violet-400/50 transition-all cursor-pointer group shadow-sm"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-zinc-900 hover:bg-zinc-800 text-zinc-100 dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:text-zinc-200 border border-zinc-700 dark:border-white/[0.1] hover:border-violet-400/50 transition-all cursor-pointer group shadow-sm"
           >
             <FileText className="w-3.5 h-3.5 text-violet-400 group-hover:text-violet-300" />
             <span>Resume</span>
-            <ArrowUpRight className="w-3 h-3 text-zinc-500 group-hover:text-violet-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+            <ArrowUpRight className="w-3 h-3 text-zinc-400 group-hover:text-violet-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
           </button>
 
-          {/* Mobile Menu Button */}
+          {/* Mobile Menu Hamburger */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2 rounded-lg bg-zinc-900 border border-white/[0.08] text-zinc-400 hover:text-zinc-100 transition-colors cursor-pointer"
-            aria-label="Toggle navigation menu"
+            className="md:hidden p-2 rounded-xl text-zinc-700 dark:text-zinc-300 bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-white/[0.08] cursor-pointer"
+            aria-label="Toggle mobile navigation"
           >
             {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
           </button>
         </div>
       </div>
 
-      {/* Mobile Drawer */}
+      {/* Mobile Navigation Drawer */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-[#0e0f14]/98 backdrop-blur-xl border-b border-white/[0.08] px-6 py-6 transition-all">
-          <nav className="flex flex-col space-y-3">
+        <div className="md:hidden mt-2 mx-4 p-5 rounded-3xl bg-white dark:bg-[#0c0d14] border border-zinc-200 dark:border-white/[0.09] shadow-2xl space-y-4 animate-fade-in">
+          <nav className="flex flex-col gap-1.5">
             {navLinks.map((link) => (
               <a
                 key={link.id}
                 href={link.href}
                 onClick={() => setMobileMenuOpen(false)}
-                className={`text-sm py-2 px-3 rounded-md transition-colors flex items-center justify-between ${
+                className={`px-4 py-2.5 rounded-xl text-xs font-medium transition-colors ${
                   activeSection === link.id
-                    ? 'bg-violet-900/20 text-violet-300 font-medium border-l-2 border-violet-500'
-                    : 'text-zinc-400 hover:text-zinc-100 hover:bg-white/[0.04]'
+                    ? 'text-violet-700 bg-violet-100/70 dark:text-white dark:bg-white/[0.08]'
+                    : 'text-zinc-700 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-white/[0.04]'
                 }`}
               >
-                <span>{link.name}</span>
-                <ChevronRightIcon className="w-4 h-4 text-zinc-600" />
+                {link.name}
               </a>
             ))}
           </nav>
+
+          <div className="pt-3 border-t border-zinc-200 dark:border-white/[0.08] flex items-center justify-between text-xs">
+            <span className="text-zinc-500 font-mono">Theme Mode</span>
+            <button
+              onClick={toggleTheme}
+              className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-zinc-100 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 border border-zinc-200 dark:border-white/[0.08] font-mono text-xs cursor-pointer"
+            >
+              {theme === 'dark' ? <Sun className="w-3.5 h-3.5 text-amber-400" /> : <Moon className="w-3.5 h-3.5 text-violet-600" />}
+              <span>{theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>
+            </button>
+          </div>
         </div>
       )}
     </header>
-  );
-}
-
-function ChevronRightIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      className={className}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <polyline points="9 18 15 12 9 6" />
-    </svg>
   );
 }

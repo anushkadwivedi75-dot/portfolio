@@ -1,20 +1,24 @@
 # Anushka Dwivedi — Personal Developer Portfolio
 
-A personal developer portfolio built for **Anushka Dwivedi**, B.Tech student specializing in **Artificial Intelligence and Machine Learning** at SVKM's Dwarkadas J. Sanghvi College of Engineering (DJSCE).
+A production-quality developer portfolio built for **Anushka Dwivedi**, B.Tech student specializing in **Artificial Intelligence and Machine Learning** at SVKM's Dwarkadas J. Sanghvi College of Engineering (DJSCE).
 
-Designed with an editorial, minimal dark aesthetic inspired by top-tier engineering studios and independent software developers. Built with **React 19**, **TypeScript**, **Tailwind CSS v4**, and **Vite**.
+Inspired by the interaction design, digital craftsmanship, and fluid presentation of [Samay Maurya's portfolio on Wall of Portfolios](https://www.wallofportfolios.in/portfolios/samay/). Built with **React 19**, **TypeScript**, **Tailwind CSS v4**, and **Vite**.
 
 ---
 
-## ✦ Core Positioning & Design Language
+## ✦ Core Architecture & Visual Direction
 
 - **Core Positioning**: *"I build intelligent systems and full-stack products that solve real-world problems."*
-- **Visual Aesthetic**:
-  - Deep charcoal canvas (`#09090b`) with refined card elevations (`#101117`, `#14151e`).
-  - Off-white typography with restrained lavender and violet accents (`#c4b5fd`, `#a78bfa`).
-  - Expressive modern sans (`Plus Jakarta Sans`) paired with editorial serif display (`Instrument Serif`) and monospaced technical labels (`JetBrains Mono`).
-  - Subtle interactive engineering motif: A generative connected systems canvas background that gently responds to cursor proximity.
-  - Zero arbitrary percentage bars, no generic templates, and no distracting animations.
+- **Color System**:
+  - Signature lavender and deep violet accents (`#c4b5fd`, `#a78bfa`, `#7c3aed`).
+  - **Dark Mode**: Deep charcoal canvas (`#08080a`) with refined card elevations (`#0c0d13`, `#12131c`).
+  - **Light Mode**: Soft off-white canvas (`#f8f7fc`) with crisp card surfaces (`#ffffff`, `#f1eff8`).
+  - Persistent theme engine saved to `localStorage` with system preference detection and accessible contrast.
+- **Typography**:
+  - Expressive modern geometric sans: `Plus Jakarta Sans`.
+  - Editorial display serif: `Instrument Serif` (italic).
+  - Technical telemetry: `JetBrains Mono`.
+- **Dynamic Background**: Interactive HTML5 connected systems canvas responding gracefully to mouse proximity.
 
 ---
 
@@ -22,142 +26,67 @@ Designed with an editorial, minimal dark aesthetic inspired by top-tier engineer
 
 ### 01. AirSentinel — End-to-End AQI Spatial Monitoring & Anomaly Detection
 - **Stack**: Flutter, FastAPI, PostgreSQL, PostGIS, SQLite, Python, scikit-learn, ESP32, BLE, Docker.
-- **Key Features**:
-  - Spatial divergence detection between personal wearables and official CPCB ground stations within 300m via PostGIS `ST_DWithin` and `ST_Distance`.
-  - Rolling 48-hour multi-variate anomaly detection using unsupervised Isolation Forest in scikit-learn.
-  - Offline-first mobile synchronization utilizing local SQLite transaction queuing.
-  - Full adherence to India National CPCB 6-tier AQI standard.
+- **Key Features**: Spatial divergence detection between personal wearables and official CPCB ground stations within 300m via PostGIS `ST_DWithin` and `ST_Distance`. Rolling 48-hour multi-variate anomaly detection using unsupervised Isolation Forest.
 - **Interactive Component**: Live radar map with toggleable 300m spatial buffer, CPCB AQI color-scale transitions, and an anomaly spike simulator.
 
-### 02. Cloud Drive Clone — Distributed Cloud Storage Platform
-- **Stack**: React, TypeScript, Firebase Auth, Firebase Storage, Tailwind CSS.
-- **Key Features**:
-  - Resumable chunked file uploads with network interruption state recovery.
-  - Deterministic recursive nested directory hierarchy with breadcrumb routing.
-  - Role-based Google OAuth token authorization and storage namespace isolation.
-- **Interactive Component**: Simulated multi-file upload progress queue with live percentage feedback and directory tree navigation.
-
-### 03. Legal Simplifier AI — AI-Powered Contract Intelligence
+### 02. Legal Simplifier AI — AI-Powered Contract Intelligence
 - **Stack**: Next.js, React, TypeScript, Tailwind CSS, Node.js, Firebase, Gemini / OpenAI API, Vector Database.
-- **Key Features**:
-  - Retrieval-Augmented Generation (RAG) with vector similarity cosine ranking.
-  - Automated clause-level risk classification (`HIGH`, `MEDIUM`, `LOW`).
-  - Plain-language legal translation extracting hidden liabilities and mutual obligations.
+- **Key Features**: Retrieval-Augmented Generation (RAG) with vector similarity cosine ranking. Automated clause-level risk classification (`HIGH`, `MEDIUM`, `LOW`).
 - **Interactive Component**: Split-screen contract analyzer with toggleable sample legal clauses (Indemnification, Non-Compete, Termination) and instant AI risk synthesis.
 
----
+### 03. Cloud Drive Clone — Distributed Cloud Storage Platform
+- **Stack**: React, TypeScript, Firebase Auth, Firebase Storage, Tailwind CSS.
+- **Key Features**: Resumable chunked file uploads with network interruption state recovery. Deterministic recursive nested directory hierarchy with breadcrumb routing.
+- **Interactive Component**: Simulated multi-file upload progress queue with live percentage feedback and directory tree navigation.
 
-## ✦ Website Structure
+### 04. SAT-SA — Supervisory Analytics Platform for SOC Assessment
+- **Stack**: Python, FastAPI, React, TypeScript, Tailwind CSS, PostgreSQL, Elasticsearch, scikit-learn, Docker.
+- **Key Features**: Causal graph incident correlation, MITRE ATT&CK kill-chain mapping across 14 tactics, and explainable AI risk scoring (SHAP feature attribution weights).
+- **Interactive Component**: Live incident alert stream, correlated attack cluster review, explainable feature weighting bars, and automated playbook containment execution.
 
-1. **Header & Navigation**: Sticky blur bar with personal wordmark, active section tracking, smooth scrolling, and quick Resume trigger.
-2. **Hero Section**: Live telemetry status indicator (`B.Tech AI & ML @ DJSCE`), headline, primary and secondary CTAs, social links, and an academic stats ticker.
-3. **Selected Work**: Three detailed case studies with interactive UI previews, architectural specs, and a modal for deep-dive system diagrams and database queries.
-4. **About & Education**: Narrative covering end-to-end engineering, paired with a structured academic block (`CGPA: 8.13 / 10`, `Honours in Quantitative Finance and Fintech`).
-5. **Technical Skills Matrix**: Filterable matrix across *Programming*, *Web Development*, *Developer Tools & Platforms*, and *AI & Data*.
-6. **Leadership & Community**: Timeline showcasing leadership as **VCP Admin at DJS ACM SIGAI** and **Events Head at DJS eXpress**.
-7. **Contact & Footer**: Working mailto link (`anushkadwivedi75@gmail.com`), one-click copy email button with feedback, local Mumbai time indicator, and back-to-top button.
-8. **Interactive CV Modal**: Built-in resume viewer with one-click print/save as PDF and plain-text copy functionality.
-
----
-
-## ✦ Project Directory Layout
-
-```
-portfolio/
-├── public/
-│   └── favicon.svg              # Minimal personal brand vector favicon
-├── src/
-│   ├── components/
-│   │   ├── icons/
-│   │   │   └── BrandIcons.tsx   # Verified SVG icons for GitHub & LinkedIn
-│   │   ├── mockups/
-│   │   │   ├── AirSentinelMockup.tsx     # Interactive AQI map & anomaly simulator
-│   │   │   ├── CloudDriveMockup.tsx      # Interactive cloud storage & upload bar
-│   │   │   └── LegalSimplifierMockup.tsx # Interactive split-screen contract analyzer
-│   │   ├── About.tsx            # Personal story & DJSCE education card
-│   │   ├── ConnectedSystemsCanvas.tsx # Interactive graph network background
-│   │   ├── Contact.tsx          # Understated contact box & local time ticker
-│   │   ├── Hero.tsx             # Typographic headline & metric cards
-│   │   ├── Leadership.tsx       # DJS ACM SIGAI & DJS eXpress experience
-│   │   ├── Navbar.tsx           # Responsive sticky navigation & mobile drawer
-│   │   ├── ProjectCard.tsx      # Case study card with interactive preview
-│   │   ├── ProjectModal.tsx     # Architectural deep-dive drawer
-│   │   ├── ResumeModal.tsx      # In-app CV viewer with print/copy support
-│   │   └── Skills.tsx           # Categorized technical skill matrix
-│   ├── data/
-│   │   └── portfolioData.ts     # CENTRAL PLACE TO UPDATE ALL CONTENT & LINKS
-│   ├── types/
-│   │   └── index.ts             # TypeScript interfaces for all data structures
-│   ├── App.tsx                  # Master application layout
-│   ├── index.css                # Tailwind CSS v4 design tokens, fonts, & styles
-│   └── main.tsx                 # Application entry point
-├── dist/                        # Production build output
-├── index.html                   # HTML entry with SEO metadata and Google Fonts
-├── package.json                 # Project dependencies & scripts
-├── vite.config.ts               # Vite configuration with @tailwindcss/vite plugin
-└── README.md
-```
+### 05. Additional Projects Archive
+- **QuantAlpha**: Quantitative Portfolio Optimizer & Risk Modeling (Python, Pandas, NumPy, Modern Portfolio Theory).
+- **FinSentiment**: Financial News Entity & Sentiment Extraction Pipeline (FastAPI, Transformers, PyTorch, React).
+- **VisionGate**: Edge Computer Vision & Contact-Free Gesture Tracker (OpenCV, MediaPipe, Python, SQLite).
 
 ---
 
-## ✦ How to Customize Your Content & Links
+## ✦ Website Sections
 
-All personal content, social URLs, and project links are centralized in:
-`src/data/portfolioData.ts`
-
-- **Personal Information & Links**:
-  ```typescript
-  export const personalInfo = {
-    name: 'Anushka Dwivedi',
-    email: 'anushkadwivedi75@gmail.com',
-    github: 'https://github.com/anushkadwivedi75', // Update if different
-    linkedin: 'https://www.linkedin.com/in/anushkadwivedi', // Update with exact slug
-    location: 'Mumbai, India',
-    ...
-  };
-  ```
-- **Project Repositories & Live Demos**:
-  Each project object in `projectsData` has a `links` property where you can set verified URLs.
+1. **Dynamic Floating Navbar**: Glassmorphism container with personal wordmark, live scroll-spy section tracking, theme toggle switch (Dark/Light mode), and quick Resume trigger.
+2. **Hero Section**: Live telemetry status indicator (`B.Tech AI & ML @ DJSCE • Mumbai, IN`), headline with editorial serif typography, dual CTAs, social links, and an anchored developer specimen telemetry card.
+3. **Selected Work**: 4 flagship production architectures with interactive UI previews, unboxed 3-column engineering breakdowns, and deep-dive technical modals.
+4. **Additional Projects**: Expandable archive exploring open-source repositories and quantitative tools.
+5. **About & Philosophy**: Narrative on end-to-end engineering and systems thinking, paired with an academic foundation block (`CGPA: 8.13 / 10`, `Honours in Quantitative Finance and Fintech`).
+6. **Technical Skills Matrix**: Filterable matrix across 6 categories:
+   - Programming Languages
+   - Frontend Development
+   - Backend Development
+   - AI & Machine Learning
+   - Databases & Tools
+   - Development Platforms
+7. **Leadership & Community**: Timeline showcasing leadership as **VCP Admin at DJS ACM SIGAI** and **Events Head at DJS eXpress**.
+8. **Achievements & Certifications**: Academic honors, hackathon achievements, and verified technical certifications.
+9. **Contact & Footer**: Interactive one-click email copy with feedback toast (`anushkadwivedi75@gmail.com`), live Mumbai time indicator, social links, and smooth back-to-top button.
+10. **Interactive Curriculum Vitae Modal**: In-app CV viewer with one-click print/save as PDF and plain-text copy functionality.
 
 ---
 
 ## ✦ Getting Started & Local Development
 
-### 1. Prerequisites
-- Node.js (v20+ recommended)
-- npm (v10+)
-
-### 2. Run the Development Server
+### 1. Run Development Server
 ```bash
 npm run dev
 ```
-The site will be available at `http://localhost:5173/`.
+Open `http://localhost:5173/` in your browser.
 
-### 3. Production Build & Validation
+### 2. Build for Production
 ```bash
 npm run build
 ```
-This runs TypeScript type checking (`tsc -b`) and bundles the static production output into the `dist/` directory.
+Type checks the project with `tsc -b` and bundles static production assets into `dist/`.
 
-### 4. Preview the Production Build
+### 3. Preview Production Build
 ```bash
 npm run preview
 ```
-
----
-
-## ✦ Deploying to Production
-
-The application compiles to pure static HTML/CSS/JS in `dist/`. It can be deployed in seconds to any modern hosting service:
-
-- **Vercel**: Run `npx vercel` or connect the GitHub repository. Build command: `npm run build`, Output directory: `dist`.
-- **Netlify**: Run `npx netlify deploy` or link Git. Build command: `npm run build`, Publish directory: `dist`.
-- **GitHub Pages**: Configure GitHub Actions with the standard Vite deployment workflow.
-
----
-
-## ✦ Information for Anushka to Finalize
-
-1. **LinkedIn Profile URL**: Replace the default placeholder in [src/data/portfolioData.ts](file:///c:/portfolio/src/data/portfolioData.ts) with your exact public profile link.
-2. **GitHub Repository Links**: Add direct repository links to [src/data/portfolioData.ts](file:///c:/portfolio/src/data/portfolioData.ts) as your projects are open-sourced.
-3. **Optional Static PDF**: If you have a pre-formatted single-page PDF resume, place it in `public/resume.pdf` to link directly alongside the built-in printable CV modal.
