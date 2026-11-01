@@ -8,6 +8,8 @@ import ProjectModal from './components/ProjectModal';
 import ResumeModal from './components/ResumeModal';
 import SoundDock from './components/SoundDock';
 import PencilScroller from './components/PencilScroller';
+import PaperStarCursor from './components/PaperStarCursor';
+import PortfolioLoader from './components/PortfolioLoader';
 import { projectsData } from './data/portfolioData';
 import type { Project } from './types';
 import { ThemeProvider } from './context/ThemeContext';
@@ -22,6 +24,12 @@ function MainApp() {
 
   return (
     <div className="min-h-screen bg-[var(--canvas-bg)] text-[var(--canvas-text)] font-sans antialiased selection:bg-red-500/20 selection:text-red-900 transition-colors duration-300 relative">
+      {/* Signature Initialisation Blueprint Loader */}
+      <PortfolioLoader />
+
+      {/* Cute Butter Yellow Origami Paper Star Cursor */}
+      <PaperStarCursor />
+
       {/* Interactive Vertical Pencil Progress Scroller (Matches Reference Video) */}
       <PencilScroller />
 

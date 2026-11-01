@@ -4,6 +4,8 @@ import ProjectCard from './ProjectCard';
 import MoreWork from './MoreWork';
 import { soundManager } from '../utils/soundEffects';
 import { ArrowDown } from 'lucide-react';
+import ConnectedSystemsCanvas from './ConnectedSystemsCanvas';
+import ThreeTelescope from './ThreeTelescope';
 
 interface WorkExperienceProps {
   projects: Project[];
@@ -16,6 +18,7 @@ export default function WorkExperience({ projects, onOpenModal }: WorkExperience
   const travelRef = useRef<number>(3200);
   const progressBarRef = useRef<HTMLDivElement | null>(null);
   const progressTextRef = useRef<HTMLSpanElement | null>(null);
+  const whooshPlayedRef = useRef(false);
 
   const [scrollProgress, setScrollProgress] = useState(0);
 
@@ -65,9 +68,10 @@ export default function WorkExperience({ projects, onOpenModal }: WorkExperience
           const p = Math.max(0, Math.min(1, scrolled / totalScrollable));
           setScrollProgress(p);
 
-          // If in Stage 3 (Inside Headset / Horizontal Glide), update rail transform directly
-          if (p >= 0.64 && railRef.current) {
-            const glideProgress = Math.max(0, Math.min(1, (p - 0.64) / (1.0 - 0.64)));
+          // If in Stage 4 (Horizontal Glide), anchor at Project 01 first (0.66 -> 0.72),
+          // then smoothly glide through the rest of the projects (0.72 -> 1.00)
+          if (p >= 0.72 && railRef.current) {
+            const glideProgress = Math.max(0, Math.min(1, (p - 0.72) / (1.0 - 0.72)));
             const currentTravel = travelRef.current;
             railRef.current.style.transform = `translate3d(-${glideProgress * currentTravel}px, 0, 0)`;
 
@@ -76,6 +80,15 @@ export default function WorkExperience({ projects, onOpenModal }: WorkExperience
             }
             if (progressTextRef.current) {
               progressTextRef.current.textContent = `${Math.round(glideProgress * 100)}% TRAVERSED`;
+            }
+          } else if (p < 0.72 && railRef.current) {
+            // Anchor firmly at Project 01 (zero scroll displacement)
+            railRef.current.style.transform = `translate3d(0px, 0, 0)`;
+            if (progressBarRef.current) {
+              progressBarRef.current.style.width = `0%`;
+            }
+            if (progressTextRef.current) {
+              progressTextRef.current.textContent = `0% TRAVERSED`;
             }
           }
         }
@@ -91,24 +104,36 @@ export default function WorkExperience({ projects, onOpenModal }: WorkExperience
     };
   }, []);
 
+  // Audio cue when plunging through eyepiece into Project 01
+  useEffect(() => {
+    if (scrollProgress >= 0.65 && !whooshPlayedRef.current) {
+      soundManager.playWhoosh();
+      whooshPlayedRef.current = true;
+    } else if (scrollProgress < 0.55) {
+      whooshPlayedRef.current = false;
+    }
+  }, [scrollProgress]);
+
   // =========================================================================
   // PRECISE SEQUENTIAL TIMELINE (Appears ONE BY ONE as user scrolls)
   //
   // Total Scroll Progress: 0.00 -> 1.00
   //
-  // ACT 1: "welcome to my" (0.00 -> 0.20)
-  //        "work section." + red squiggle (0.06 -> 0.20)
+  // ACT 1: "welcome to my" (0.00 -> 0.18)
+  //        "work section." + red squiggle (0.06 -> 0.18)
   //        Both fade out cleanly: (0.18 -> 0.23)
   //
-  // ACT 2: "but first," (0.24 -> 0.42)
-  //        "put these on." (0.30 -> 0.42)
-  //        Both fade out cleanly: (0.40 -> 0.45)
+  // ACT 2: "but first," (0.24 -> 0.39)
+  //        "look closely." (0.29 -> 0.39)
+  //        Both fade out cleanly: (0.39 -> 0.44)
   //
-  // ACT 3: VR Headset appears (0.46 -> 0.52)
-  //        VR Headset zooms in (0.52 -> 0.65)
+  // ACT 3: STANDING TELESCOPE SEQUENCE (0.44 -> 0.66)
+  //        - Fades in standing on tripod in 3/4 perspective: (0.44 -> 0.50)
+  //        - Rotates in place on tripod mount as scrolled: (0.50 -> 0.58)
+  //        - Zooms directly into the ocular eyepiece: (0.58 -> 0.66)
   //
-  // ACT 4: VIEWING PROJECTS DIRECTLY IN THE HEADSET (0.64 -> 1.00)
-  //        Spatial HUD active, curved edges, horizontal gliding through projects!
+  // ACT 4: VIEWING PROJECTS DIRECTLY THROUGH TELESCOPE (0.64 -> 1.00)
+  //        Observatory HUD active, curved edges, horizontal gliding through projects!
   // =========================================================================
 
   // Act 1 Line 1: "welcome to my"
@@ -165,7 +190,7 @@ export default function WorkExperience({ projects, onOpenModal }: WorkExperience
     l3Opacity = 0;
   }
 
-  // Act 2 Line 2: "put these on." (appears AFTER Line 1!)
+  // Act 2 Line 2: "look closely." (appears AFTER Line 1!)
   let l4Opacity = 0;
   let l4Y = 30;
   if (scrollProgress >= 0.29 && scrollProgress <= 0.35) {
@@ -183,40 +208,47 @@ export default function WorkExperience({ projects, onOpenModal }: WorkExperience
     l4Opacity = 0;
   }
 
-  // Act 3: VR Headset appears & zooms in towards viewer
-  let headsetOpacity = 0;
-  let headsetScale = 0.85;
-  if (scrollProgress >= 0.46 && scrollProgress <= 0.52) {
-    const t = (scrollProgress - 0.46) / (0.52 - 0.46);
-    headsetOpacity = t;
-    headsetScale = 0.85 + t * 0.15;
-  } else if (scrollProgress > 0.52 && scrollProgress <= 0.65) {
-    headsetOpacity = 1;
-    const t = (scrollProgress - 0.52) / (0.65 - 0.52);
-    headsetScale = 1.0 + Math.pow(t, 2.3) * 23.0; // 1.0 -> 24.0
+  // Act 3: True 3D WebGL Telescope (rotates in place, then zooms into eyepiece)
+  let telescopeOpacity = 0;
+
+  if (scrollProgress >= 0.44 && scrollProgress <= 0.49) {
+    // 1. Fade in standing on tripod in 3/4 perspective
+    const t = (scrollProgress - 0.44) / (0.49 - 0.44);
+    telescopeOpacity = t;
+  } else if (scrollProgress > 0.49 && scrollProgress <= 0.66) {
+    // 2. Rotates in place, then begins slow, majestic camera zoom
+    telescopeOpacity = 1;
+  } else if (scrollProgress > 0.66 && scrollProgress <= 0.70) {
+    // 3. Smoothly dissolves as camera passes through ocular lens focal plane
+    telescopeOpacity = Math.max(0, 1 - (scrollProgress - 0.66) / 0.04);
   } else {
-    headsetOpacity = 0;
+    telescopeOpacity = 0;
   }
 
-  // Act 4: Inside the Headset (Spatial HUD + Horizontal Project Rail)
+  // Act 4: Inside the Telescope Observatory (Spatial HUD + Horizontal Gliding Projects)
+  // Anchored firmly at Project 01 (0.66 -> 0.72) so the user has time to view the first project!
   let projectStageOpacity = 0;
-  if (scrollProgress >= 0.63 && scrollProgress <= 0.67) {
-    projectStageOpacity = (scrollProgress - 0.63) / (0.67 - 0.63);
-  } else if (scrollProgress > 0.67) {
+  if (scrollProgress >= 0.66 && scrollProgress <= 0.71) {
+    projectStageOpacity = (scrollProgress - 0.66) / (0.71 - 0.66);
+  } else if (scrollProgress > 0.71) {
     projectStageOpacity = 1;
   }
 
-  const isInsideHeadset = scrollProgress >= 0.63;
+  const isInsideObservatory = scrollProgress >= 0.66;
 
   return (
     <div
       id="work"
       ref={containerRef}
       className="relative bg-[var(--color-void)] text-[var(--color-fog)]"
-      style={{ height: '700vh' }}
+      style={{ height: '900vh' }}
     >
       {/* Sticky Fullscreen Cockpit Stage */}
       <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center overflow-hidden">
+        {/* Spatial Constellation Field in Background */}
+        <div className="absolute inset-0 pointer-events-none opacity-45 dark:opacity-60 z-0">
+          <ConnectedSystemsCanvas />
+        </div>
         
         {/* ============================================================== */}
         {/* ACT 1: "welcome to my" ... then "work section." (one by one)   */}
@@ -266,7 +298,7 @@ export default function WorkExperience({ projects, onOpenModal }: WorkExperience
         )}
 
         {/* ============================================================== */}
-        {/* ACT 2: "but first," ... then "put these on." (one by one)      */}
+        {/* ACT 2: "but first," ... then "look closely." (one by one)      */}
         {/* ============================================================== */}
         {(l3Opacity > 0 || l4Opacity > 0) && (
           <div className="text-center flex flex-col items-center justify-center absolute inset-0 my-auto pointer-events-none select-none z-10 px-6">
@@ -283,82 +315,56 @@ export default function WorkExperience({ projects, onOpenModal }: WorkExperience
 
             {/* Line 2 (appears right after Line 1) */}
             <p
-              className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-sans font-light text-zinc-400 leading-none mt-3 sm:mt-4 transition-transform duration-75"
+              className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-editorial italic font-normal text-amber-200 leading-none mt-3 sm:mt-4 transition-transform duration-75"
               style={{
                 opacity: l4Opacity,
                 transform: `translate3d(0, ${l4Y}px, 0)`,
               }}
             >
-              put these on.
+              look closely.
             </p>
           </div>
         )}
 
         {/* ============================================================== */}
-        {/* ACT 3: VR HEADSET ENLARGING LIKE PUTTING IT ON                 */}
+        {/* ACT 3: TRUE 3D WEBGL STANDING TELESCOPE: ROTATES & ZOOMS IN   */}
         {/* ============================================================== */}
-        {headsetOpacity > 0 && (
-          <div
-            className="absolute inset-0 flex items-center justify-center pointer-events-none z-20"
-            style={{
-              opacity: headsetOpacity,
-              transform: `scale(${headsetScale})`,
-              transformOrigin: '50% 50%',
-              willChange: 'transform, opacity',
-            }}
-          >
-            {/* Precision Spatial Visor Enclosure */}
-            <div className="relative w-80 sm:w-96 h-40 sm:h-48 rounded-[3rem] p-[3px] bg-gradient-to-r from-zinc-300 via-zinc-100 to-zinc-300 dark:from-zinc-700 dark:via-zinc-500 dark:to-zinc-700 shadow-2xl flex items-center justify-center">
-              
-              {/* Outer Enclosure Frame */}
-              <div className="w-full h-full rounded-[2.9rem] bg-gradient-to-b from-zinc-900 via-zinc-950 to-black p-2.5 flex items-center justify-center relative overflow-hidden shadow-inner">
-                
-                {/* 3D Glass Surface Reflections */}
-                <div className="absolute inset-0 bg-gradient-to-tr from-violet-600/30 via-transparent to-purple-400/20 pointer-events-none"></div>
-                <div className="absolute top-2 left-10 w-28 h-5 bg-white/25 rounded-full blur-sm -rotate-6 pointer-events-none"></div>
-                
-                {/* Dual Micro-OLED Optical Chambers */}
-                <div className="flex items-center justify-center gap-12 sm:gap-16 w-full h-full relative z-10">
-                  <div className="w-20 sm:w-24 h-20 sm:h-24 rounded-full border-2 border-violet-500/40 bg-zinc-900/90 shadow-[inset_0_0_20px_rgba(139,92,246,0.3)] flex items-center justify-center relative">
-                    <div className="w-12 h-12 rounded-full border border-violet-400/30 bg-black flex items-center justify-center">
-                      <div className="w-4 h-4 rounded-full bg-violet-400/80 animate-ping"></div>
-                    </div>
-                  </div>
-
-                  <div className="w-20 sm:w-24 h-20 sm:h-24 rounded-full border-2 border-violet-500/40 bg-zinc-900/90 shadow-[inset_0_0_20px_rgba(139,92,246,0.3)] flex items-center justify-center relative">
-                    <div className="w-12 h-12 rounded-full border border-violet-400/30 bg-black flex items-center justify-center">
-                      <div className="w-4 h-4 rounded-full bg-violet-400/80 animate-ping"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Side Solo Knit Straps */}
-              <div className="absolute -left-7 top-1/2 -translate-y-1/2 w-8 h-12 bg-gradient-to-r from-zinc-500 to-zinc-400 rounded-l-xl"></div>
-              <div className="absolute -right-7 top-1/2 -translate-y-1/2 w-8 h-12 bg-gradient-to-l from-zinc-500 to-zinc-400 rounded-r-xl"></div>
-            </div>
-          </div>
+        {telescopeOpacity > 0 && (
+          <ThreeTelescope
+            scrollProgress={scrollProgress}
+            opacity={telescopeOpacity}
+          />
         )}
 
         {/* ============================================================== */}
-        {/* ACT 4: VIEWING PROJECTS DIRECTLY IN THE HEADSET (HORIZONTAL GLIDE) */}
+        {/* ACT 4: VIEWING PROJECTS THROUGH THE TELESCOPE (OBSERVATORY VIEW) */}
         {/* ============================================================== */}
-        {isInsideHeadset && (
+        {isInsideObservatory && (
           <div
             className="absolute inset-0 flex flex-col justify-between transition-opacity duration-300 z-30"
             style={{ opacity: projectStageOpacity }}
           >
-            {/* Spatial Visor Curved Edge Vignette & Telemetry HUD */}
-            <div className="absolute inset-0 pointer-events-none z-30 border-[10px] sm:border-[16px] border-[#0a0a0e] rounded-[2.5rem] sm:rounded-[3.5rem] shadow-[inset_0_0_60px_rgba(0,0,0,0.9),inset_0_0_15px_rgba(139,92,246,0.2)]">
-              {/* Subtle HUD Telemetry in Corners */}
-              <div className="absolute top-4 left-8 hidden sm:flex items-center gap-2 text-[10px] font-mono text-violet-400/70">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                <span>SPATIAL HUD • 120 FPS • 4K DUAL-OLED</span>
+            {/* Observatory Aperture Curved Edge Vignette & Telemetry HUD */}
+            <div className="absolute inset-0 pointer-events-none z-30 border-[10px] sm:border-[16px] border-[#0a0a0e] rounded-[2.5rem] sm:rounded-[3.5rem] shadow-[inset_0_0_70px_rgba(0,0,0,0.95),inset_0_0_20px_rgba(245,158,11,0.15)]">
+              {/* Subtle Observatory Telemetry in Corners */}
+              <div className="absolute top-4 left-8 hidden sm:flex items-center gap-2 text-[10px] font-mono text-amber-300/80">
+                <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span>
+                <span>OBSERVATORY RETICLE • OPTICAL f/2.8 • DEEP FIELD VIEW</span>
               </div>
               <div className="absolute top-4 right-8 hidden sm:flex items-center gap-3 text-[10px] font-mono text-zinc-500">
-                <span>HEADSET VIEWPORT ACTIVE</span>
+                <span>CELESTIAL COORDINATES: RA 14h 29m • DEC +62°</span>
               </div>
             </div>
+
+            {/* Cosmic Starlight Bloom during Lens Entry onto Project 01 */}
+            {scrollProgress >= 0.65 && scrollProgress <= 0.72 && (
+              <div
+                className="absolute inset-0 pointer-events-none z-35 bg-[radial-gradient(circle_at_center,rgba(254,240,138,0.3)_0%,rgba(168,85,247,0.18)_40%,transparent_70%)] transition-opacity duration-150"
+                style={{
+                  opacity: Math.sin(((scrollProgress - 0.65) / 0.07) * Math.PI),
+                }}
+              />
+            )}
 
             {/* Top Stage Label & Skip */}
             <div className="relative z-40 px-6 sm:px-12 pt-6 flex items-center justify-between">

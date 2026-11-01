@@ -43,16 +43,19 @@ export default function MoreWork() {
   const activeProject = hoveredIndex !== null ? additionalProjectsData[hoveredIndex] : null;
 
   return (
-    <div className="w-[520px] shrink-0 p-8 sm:p-10 rounded-3xl bg-white dark:bg-[#0c0d14] border border-zinc-200/90 dark:border-white/[0.08] shadow-2xl flex flex-col justify-between space-y-6 relative">
+    <div className="w-[520px] h-[580px] lg:h-[610px] shrink-0 p-8 sm:p-10 rounded-[2.5rem] bg-gradient-to-b from-[#141522] via-[#0d0e17] to-[#090a10] text-white border-2 border-white/10 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.8),inset_0_1px_1px_rgba(255,255,255,0.15)] flex flex-col justify-between space-y-6 relative overflow-hidden">
+      {/* VR Curved Top Specular Edge Highlight */}
+      <div className="absolute top-0 inset-x-12 h-[2px] bg-gradient-to-r from-transparent via-white/30 to-transparent pointer-events-none" />
+
       <div className="space-y-4">
-        <div className="flex items-center justify-between border-b border-zinc-100 dark:border-white/[0.06] pb-3">
+        <div className="flex items-center justify-between border-b border-white/[0.08] pb-3">
           <div className="flex items-center gap-2">
-            <Sparkles className="w-4 h-4 text-violet-500" />
-            <span className="text-[11px] font-mono uppercase tracking-wider text-violet-600 dark:text-violet-400 font-semibold">
+            <Sparkles className="w-4 h-4 text-violet-400" />
+            <span className="text-[11px] font-mono uppercase tracking-wider text-violet-400 font-semibold">
               Project Archive &amp; Explorations
             </span>
           </div>
-          <span className="text-xs font-mono text-zinc-500">
+          <span className="text-xs font-mono text-zinc-400">
             0{additionalProjectsData.length} Selected
           </span>
         </div>

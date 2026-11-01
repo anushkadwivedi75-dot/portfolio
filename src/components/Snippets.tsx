@@ -4,6 +4,8 @@ import {
   ChevronRight
 } from 'lucide-react';
 import { soundManager } from '../utils/soundEffects';
+import EditorialSectionHeading from './EditorialSectionHeading';
+import ConnectedSystemsCanvas from './ConnectedSystemsCanvas';
 
 type FilterType = 'all' | 'mobile' | 'web' | 'ai' | 'shipped';
 
@@ -72,18 +74,22 @@ export default function Snippets() {
   const filtered = snippets.filter((s) => activeFilter === 'all' || s.category === activeFilter);
 
   return (
-    <section id="snippets" className="py-24 bg-[var(--color-paper)] text-[var(--color-ink)] paper-grain relative border-b border-[var(--color-line)] overflow-hidden">
+    <section id="snippets" className="py-24 bg-[var(--color-paper)] text-[var(--color-ink)] paper-grain relative border-b border-[var(--color-line)] overflow-hidden select-none">
+      {/* Interactive Constellation Background */}
+      <div className="absolute inset-0 pointer-events-none opacity-60 dark:opacity-75 z-0">
+        <ConnectedSystemsCanvas />
+      </div>
+
       {/* 1. Pre-Header: The Work Between the Case Studies */}
-      <div className="max-w-5xl mx-auto px-6 text-center space-y-3 mb-16">
-        <h3 className="text-4xl sm:text-6xl md:text-7xl font-bold font-sans tracking-tight text-[var(--color-ink)]">
-          the work between
-        </h3>
-        <p className="text-4xl sm:text-6xl md:text-7xl font-editorial italic text-[var(--color-accent)] font-normal -mt-2">
-          the case studies.
-        </p>
-        <p className="text-xs sm:text-sm font-mono text-[var(--color-ink-dim)] pt-2">
-          screens, interactions &amp; little experiments.
-        </p>
+      <div className="max-w-5xl mx-auto px-6 mb-16">
+        <EditorialSectionHeading
+          tag="02 / Experimental Systems & Exploration"
+          line1="the work between"
+          line2="the case studies."
+          subtitle="screens, interactions & little experiments."
+          align="center"
+          hasSquiggle={true}
+        />
       </div>
 
       {/* 2. Topographic Mountain Illustration with Interactive Milestone Peaks */}

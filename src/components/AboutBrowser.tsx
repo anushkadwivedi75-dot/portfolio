@@ -13,6 +13,8 @@ import {
   Pause
 } from 'lucide-react';
 import { soundManager } from '../utils/soundEffects';
+import EditorialSectionHeading from './EditorialSectionHeading';
+import ConnectedSystemsCanvas from './ConnectedSystemsCanvas';
 
 interface AboutBrowserProps {
   onOpenResume: () => void;
@@ -41,22 +43,25 @@ export default function AboutBrowser({ onOpenResume }: AboutBrowserProps) {
   ];
 
   return (
-    <section id="about" className="py-24 bg-[var(--color-paper)] text-[var(--color-ink)] paper-grain relative border-b border-[var(--color-line)] overflow-hidden">
-      <div className="max-w-6xl mx-auto px-6 space-y-8">
+    <section id="about" className="py-24 bg-[var(--color-paper)] text-[var(--color-ink)] paper-grain relative border-b border-[var(--color-line)] overflow-hidden select-none">
+      {/* Interactive Constellation Background */}
+      <div className="absolute inset-0 pointer-events-none opacity-60 dark:opacity-75 z-0">
+        <ConnectedSystemsCanvas />
+      </div>
+
+      <div className="max-w-6xl mx-auto px-6 space-y-8 relative z-10">
         {/* Editorial Section Header with Handwritten Doodle */}
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-          <div className="space-y-1">
-            <span className="text-xs font-mono uppercase tracking-widest text-[var(--color-ink-dim)] font-semibold block">
-              03 / About Me
-            </span>
-            <h2 className="text-4xl sm:text-6xl font-bold font-sans text-[var(--color-ink)] tracking-tight">
-              A little more{' '}
-              <span className="font-editorial italic font-normal text-[var(--color-accent)]">about me.</span>
-            </h2>
-          </div>
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 pb-2">
+          <EditorialSectionHeading
+            tag="03 / Personal Background & Journeys"
+            line1="a little more"
+            line2="about me."
+            align="left"
+            hasSquiggle={true}
+          />
 
           {/* Handwritten Annotation with arrow pointing to the tabs */}
-          <div className="flex items-center gap-2 font-hand text-xl text-[var(--color-ink-dim)] self-start sm:self-end">
+          <div className="flex items-center gap-2 font-hand text-xl text-[var(--color-ink-dim)] self-start sm:self-end pb-3">
             <span>yes, i have too many tabs open</span>
             <svg viewBox="0 0 40 25" className="w-8 h-5 text-[var(--color-accent)] fill-none stroke-current stroke-2 rotate-12">
               <path d="M4 18 C16 4 28 8 36 20" strokeLinecap="round" />

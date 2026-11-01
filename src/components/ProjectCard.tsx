@@ -37,14 +37,20 @@ export default function ProjectCard({
 
   return (
     <article
-      className={`group relative rounded-3xl bg-[#0c0d14] text-white border border-white/[0.08] hover:border-violet-500/30 transition-all duration-300 shadow-2xl overflow-hidden flex flex-col justify-between ${
-        isRail ? 'p-7 sm:p-9 w-full min-h-[580px]' : 'p-6 sm:p-10 lg:p-12 space-y-8'
+      className={`group relative rounded-[2.5rem] bg-gradient-to-b from-[#141522] via-[#0d0e17] to-[#090a10] text-white border-2 border-white/10 hover:border-violet-500/40 transition-all duration-300 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.8),inset_0_1px_1px_rgba(255,255,255,0.15)] overflow-hidden flex flex-col justify-between ${
+        isRail ? 'p-7 sm:p-8 w-[clamp(760px,71vw,1120px)] h-[580px] lg:h-[610px] shrink-0' : 'p-6 sm:p-10 lg:p-12 space-y-8'
       }`}
+      style={isRail ? {
+        backdropFilter: 'blur(20px)',
+      } : undefined}
     >
+      {/* VR Curved Top Specular Edge Highlight */}
+      <div className="absolute top-0 inset-x-12 h-[2px] bg-gradient-to-r from-transparent via-white/30 to-transparent pointer-events-none" />
+
       {/* Top Header Row */}
-      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-white/[0.08] pb-4">
+      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-white/[0.08] pb-3.5">
         <div className="flex items-center gap-3">
-          <span className="font-mono text-xs font-bold text-violet-400 bg-violet-500/10 border border-violet-500/20 px-2.5 py-0.5 rounded">
+          <span className="font-mono text-xs font-bold text-violet-400 bg-violet-500/10 border border-violet-500/20 px-2.5 py-0.5 rounded-full">
             PROJECT {project.number}
           </span>
           <span className="text-zinc-600">•</span>
@@ -57,7 +63,7 @@ export default function ProjectCard({
           {project.technologies.slice(0, 3).map((tech) => (
             <span
               key={tech}
-              className="px-2.5 py-0.5 rounded text-[11px] font-mono bg-zinc-900 text-zinc-300 border border-white/[0.08]"
+              className="px-2.5 py-0.5 rounded-full text-[11px] font-mono bg-zinc-900/90 text-zinc-300 border border-white/[0.08]"
             >
               {tech}
             </span>
@@ -66,21 +72,20 @@ export default function ProjectCard({
       </div>
 
       {/* Main Split Grid: Left Column Typography & Story, Right Column Live Mockup */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center my-auto py-4">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center flex-1 py-3 overflow-hidden">
         {/* Left Column (5 cols) */}
-        <div className="lg:col-span-5 space-y-4">
-          <div className="space-y-1">
+        <div className="lg:col-span-5 flex flex-col justify-between h-full py-1 space-y-3">
+          <div className="space-y-2">
             <h3 className="text-3xl sm:text-4xl font-bold font-sans tracking-tight text-white leading-tight">
               {project.title}
             </h3>
             <p className="text-sm font-medium text-violet-400 font-sans leading-snug">
               {project.subtitle}
             </p>
+            <p className="text-xs sm:text-sm text-zinc-400 font-light leading-relaxed line-clamp-3">
+              {project.shortDescription}
+            </p>
           </div>
-
-          <p className="text-xs sm:text-sm text-zinc-400 font-light leading-relaxed">
-            {project.shortDescription}
-          </p>
 
           {/* Key Metrics / Highlights */}
           <div className="space-y-2 pt-2 border-t border-white/[0.06]">
@@ -91,18 +96,23 @@ export default function ProjectCard({
               </div>
             ))}
           </div>
+
+          <div className="text-[11px] font-mono text-zinc-500">
+            {project.timeline} • SVKM's DJSCE Architecture
+          </div>
         </div>
 
-        {/* Right Column (7 cols): The Heroic Interactive Mockup */}
-        <div className="lg:col-span-7 relative rounded-2xl overflow-hidden shadow-2xl border border-white/[0.08] bg-[#08090d]">
+        {/* Right Column (7 cols): The Heroic Interactive Mockup with Fixed Aspect & Curved VR Border */}
+        <div className="lg:col-span-7 h-[360px] lg:h-[390px] w-full rounded-2xl overflow-y-auto border border-white/10 bg-[#08090d] shadow-2xl relative">
           {renderMockup()}
         </div>
       </div>
 
       {/* Bottom Action Footer */}
-      <div className="pt-4 border-t border-white/[0.08] flex flex-wrap items-center justify-between gap-4 text-xs font-mono">
-        <span className="text-zinc-500 text-[11px]">
-          {project.timeline} • SVKM's DJSCE Architecture
+      <div className="pt-3.5 border-t border-white/[0.08] flex flex-wrap items-center justify-between gap-4 text-xs font-mono">
+        <span className="text-zinc-500 text-[11px] flex items-center gap-2">
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+          <span>Spatial Hardware &amp; Web Interface</span>
         </span>
 
         <div className="flex items-center gap-3">

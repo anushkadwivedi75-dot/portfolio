@@ -72,7 +72,7 @@ export default function Hero({ onOpenResume }: HeroProps) {
             </p>
           </div>
 
-          {/* Hand-drawn "hey, I'm" with SVG arrow */}
+          {/* Hand-drawn "hey, I’m" with SVG arrow */}
           <div className="relative inline-block">
             <div className="flex items-center gap-2">
               <span className="font-hand text-3xl sm:text-4xl text-[var(--canvas-text)] -rotate-3">

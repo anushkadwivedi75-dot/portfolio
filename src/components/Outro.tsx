@@ -1,4 +1,6 @@
 import { soundManager } from '../utils/soundEffects';
+import EditorialSectionHeading from './EditorialSectionHeading';
+import ConnectedSystemsCanvas from './ConnectedSystemsCanvas';
 
 interface OutroProps {
   onOpenResume?: () => void;
@@ -6,19 +8,25 @@ interface OutroProps {
 
 export default function Outro({ onOpenResume }: OutroProps) {
   return (
-    <footer className="py-24 bg-[var(--color-paper)] text-[var(--color-ink)] paper-grain relative overflow-hidden">
-      {/* 1. Centered Outro Statement */}
-      <div className="max-w-4xl mx-auto px-6 text-center space-y-4 mb-20">
-        <h2 className="text-5xl sm:text-7xl md:text-8xl font-bold font-sans tracking-tight text-[var(--color-ink)]">
-          that’s all from
-        </h2>
-        <p className="text-5xl sm:text-7xl md:text-8xl font-sans font-bold text-[var(--color-ink-dim)]">
-          my side.
-        </p>
+    <footer className="py-24 bg-[var(--color-paper)] text-[var(--color-ink)] paper-grain relative overflow-hidden select-none">
+      {/* Starry Constellation Background over the Summit */}
+      <div className="absolute inset-0 pointer-events-none opacity-60 dark:opacity-80 z-0">
+        <ConnectedSystemsCanvas />
+      </div>
+
+      {/* 1. Centered Outro Statement with Signature Sequential Transition */}
+      <div className="max-w-4xl mx-auto px-6 mb-20 relative z-10">
+        <EditorialSectionHeading
+          tag="04 / That's a wrap"
+          line1="that’s all from"
+          line2="my side."
+          align="center"
+          hasSquiggle={true}
+        />
       </div>
 
       {/* 2. Mountain Summit Contour Curve with K2 Elevation */}
-      <div className="max-w-6xl mx-auto px-6 relative my-12">
+      <div className="max-w-6xl mx-auto px-6 relative my-12 z-10">
         <div className="relative w-full h-56 flex flex-col items-center justify-end overflow-hidden">
           {/* SVG Peak Curve */}
           <svg
