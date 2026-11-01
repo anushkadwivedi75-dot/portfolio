@@ -551,18 +551,18 @@ export default function ThreeTelescope({
       if (!telescope || !cam) return;
 
       // Phase 1 & 2: Stand in 3/4 perspective (matching illustration),
-      // then smoothly rotate on mount in place as scrolled (0.44 -> 0.50)
+      // then smoothly rotate on mount in place as scrolled (0.40 -> 0.47)
       let targetRotY = -0.48;
       let targetRotX = 0.08;
       let mouseInfluence = 1.0;
 
-      if (smoothP <= 0.44) {
+      if (smoothP <= 0.40) {
         targetRotY = -0.48;
         targetRotX = 0.08;
         mouseInfluence = 1.0;
-      } else if (smoothP > 0.44 && smoothP <= 0.50) {
+      } else if (smoothP > 0.40 && smoothP <= 0.47) {
         // Rotates smoothly in place to face camera
-        const t = (smoothP - 0.44) / (0.50 - 0.44);
+        const t = (smoothP - 0.40) / (0.47 - 0.40);
         const ease = t * t * (3 - 2 * t);
         targetRotY = -0.48 * (1 - ease);
         targetRotX = 0.08 * (1 - ease);
@@ -580,11 +580,11 @@ export default function ThreeTelescope({
       telescope.rotation.y = currentRotY + curMouseX * 0.25 * mouseInfluence;
       telescope.rotation.x = currentRotX + curMouseY * 0.15 * mouseInfluence;
 
-      // Phase 3: Zoom smoothly towards the Ocular Eyepiece (0.50 -> 0.58)
+      // Phase 3: Zoom smoothly towards the Ocular Eyepiece (0.47 -> 0.55)
       // Rock-solid camera flight directly into the optical ocular lens
       let zoomT = 0;
-      if (smoothP > 0.50) {
-        zoomT = Math.min(1, Math.max(0, (smoothP - 0.50) / (0.58 - 0.50)));
+      if (smoothP > 0.47) {
+        zoomT = Math.min(1, Math.max(0, (smoothP - 0.47) / (0.55 - 0.47)));
       }
       // Cubic smoothstep for silky camera inertia
       const zoomEase = zoomT * zoomT * (3 - 2 * zoomT);
