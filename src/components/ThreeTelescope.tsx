@@ -551,18 +551,18 @@ export default function ThreeTelescope({
       if (!telescope || !cam) return;
 
       // Phase 1 & 2: Stand in 3/4 perspective (matching illustration),
-      // then smoothly rotate on mount in place as scrolled (0.48 -> 0.56)
+      // then smoothly rotate on mount in place as scrolled (0.44 -> 0.50)
       let targetRotY = -0.48;
       let targetRotX = 0.08;
       let mouseInfluence = 1.0;
 
-      if (smoothP <= 0.48) {
+      if (smoothP <= 0.44) {
         targetRotY = -0.48;
         targetRotX = 0.08;
         mouseInfluence = 1.0;
-      } else if (smoothP > 0.48 && smoothP <= 0.56) {
+      } else if (smoothP > 0.44 && smoothP <= 0.50) {
         // Rotates smoothly in place to face camera
-        const t = (smoothP - 0.48) / (0.56 - 0.48);
+        const t = (smoothP - 0.44) / (0.50 - 0.44);
         const ease = t * t * (3 - 2 * t);
         targetRotY = -0.48 * (1 - ease);
         targetRotX = 0.08 * (1 - ease);
@@ -574,39 +574,38 @@ export default function ThreeTelescope({
       }
 
       // Smoothly interpolate rotation angles
-      currentRotY += (targetRotY - currentRotY) * Math.min(1, dt * 12.0);
-      currentRotX += (targetRotX - currentRotX) * Math.min(1, dt * 12.0);
+      currentRotY += (targetRotY - currentRotY) * Math.min(1, dt * 14.0);
+      currentRotX += (targetRotX - currentRotX) * Math.min(1, dt * 14.0);
 
       telescope.rotation.y = currentRotY + curMouseX * 0.25 * mouseInfluence;
       telescope.rotation.x = currentRotX + curMouseY * 0.15 * mouseInfluence;
 
-      // Phase 3: Zoom directly into the Ocular Eyepiece (0.57 -> 0.69)
-      // Slow, majestic camera flight directly down the optical center of the lens
+      // Phase 3: Zoom smoothly towards the Ocular Eyepiece (0.50 -> 0.58)
+      // Rock-solid camera flight directly into the optical ocular lens
       let zoomT = 0;
-      if (smoothP > 0.57) {
-        zoomT = Math.min(1, Math.max(0, (smoothP - 0.57) / (0.69 - 0.57)));
+      if (smoothP > 0.50) {
+        zoomT = Math.min(1, Math.max(0, (smoothP - 0.50) / (0.58 - 0.50)));
       }
-      // Quintic smooth curve for silky camera flight
-      const zoomEase = zoomT * zoomT * zoomT * (zoomT * (zoomT * 6 - 15) + 10);
+      // Cubic smoothstep for silky camera inertia
+      const zoomEase = zoomT * zoomT * (3 - 2 * zoomT);
 
       // Eyepiece world coordinate
       const epWorldPos = new THREE.Vector3();
-      const lensNormal = new THREE.Vector3(0, 1, 0);
-
       if (ocularLensRef.current) {
         ocularLensRef.current.getWorldPosition(epWorldPos);
-        const q = new THREE.Quaternion();
-        ocularLensRef.current.getWorldQuaternion(q);
-        lensNormal.applyQuaternion(q).normalize();
       } else {
-        epWorldPos.set(-1.3, 0.9, 0.3);
+        epWorldPos.set(-1.18, 0.85, 0.25);
       }
 
-      // Target camera position: exactly 0.07 units in front of the lens surface along its optical normal!
-      // This completely eliminates clipping, distortion, and sudden snapping glitches.
-      const targetCamPos = epWorldPos.clone().add(lensNormal.clone().multiplyScalar(0.07));
+      // Stable camera target in front of the lens surface
+      // Distance of 0.55 fills the entire viewport with the ocular lens without gimbal lock
+      const targetCamPos = new THREE.Vector3(
+        epWorldPos.x,
+        epWorldPos.y + 0.12,
+        epWorldPos.z + 0.55
+      );
 
-      // Target lookAt vector smoothly blends from initial center lookAt to eyepiece position
+      // Target lookAt vector smoothly blends from center to eyepiece position
       const curLookAt = new THREE.Vector3();
       curLookAt.lerpVectors(startLookAt, epWorldPos, zoomEase);
 
@@ -614,12 +613,12 @@ export default function ThreeTelescope({
       cam.position.lerpVectors(startCamPos, targetCamPos, zoomEase);
       cam.lookAt(curLookAt);
 
-      // Eyepiece starlight blooms intensely as you plunge in
-      epSparkleLight.intensity = 1.8 + zoomEase * 7.5;
+      // Eyepiece starlight blooms as camera enters the lens
+      epSparkleLight.intensity = 1.8 + zoomEase * 6.5;
 
       // Reticle spins subtly as you approach
       if (reticleGroupRef.current) {
-        reticleGroupRef.current.rotation.z += dt * (0.8 + zoomEase * 3.5);
+        reticleGroupRef.current.rotation.z += dt * (0.8 + zoomEase * 3.0);
       }
 
       renderer.render(scene, cam);

@@ -68,10 +68,11 @@ export default function WorkExperience({ projects, onOpenModal }: WorkExperience
           const p = Math.max(0, Math.min(1, scrolled / totalScrollable));
           setScrollProgress(p);
 
-          // If in Stage 4 (Horizontal Glide), anchor at Project 01 first (0.66 -> 0.72),
-          // then smoothly glide through the rest of the projects (0.72 -> 1.00)
-          if (p >= 0.72 && railRef.current) {
-            const glideProgress = Math.max(0, Math.min(1, (p - 0.72) / (1.0 - 0.72)));
+          // If in Stage 4 (Horizontal Glide), anchor firmly at Project 01 (0.60 -> 0.74)
+          // so the user has time to view the first project in full detail!
+          // Only after scrolling past 0.74 does horizontal translation begin (0.74 -> 1.00)
+          if (p >= 0.74 && railRef.current) {
+            const glideProgress = Math.max(0, Math.min(1, (p - 0.74) / (1.0 - 0.74)));
             const currentTravel = travelRef.current;
             railRef.current.style.transform = `translate3d(-${glideProgress * currentTravel}px, 0, 0)`;
 
@@ -81,7 +82,7 @@ export default function WorkExperience({ projects, onOpenModal }: WorkExperience
             if (progressTextRef.current) {
               progressTextRef.current.textContent = `${Math.round(glideProgress * 100)}% TRAVERSED`;
             }
-          } else if (p < 0.72 && railRef.current) {
+          } else if (p < 0.74 && railRef.current) {
             // Anchor firmly at Project 01 (zero scroll displacement)
             railRef.current.style.transform = `translate3d(0px, 0, 0)`;
             if (progressBarRef.current) {
@@ -106,10 +107,10 @@ export default function WorkExperience({ projects, onOpenModal }: WorkExperience
 
   // Audio cue when plunging through eyepiece into Project 01
   useEffect(() => {
-    if (scrollProgress >= 0.65 && !whooshPlayedRef.current) {
+    if (scrollProgress >= 0.56 && !whooshPlayedRef.current) {
       soundManager.playWhoosh();
       whooshPlayedRef.current = true;
-    } else if (scrollProgress < 0.55) {
+    } else if (scrollProgress < 0.48) {
       whooshPlayedRef.current = false;
     }
   }, [scrollProgress]);
@@ -119,35 +120,38 @@ export default function WorkExperience({ projects, onOpenModal }: WorkExperience
   //
   // Total Scroll Progress: 0.00 -> 1.00
   //
-  // ACT 1: "welcome to my" (0.00 -> 0.18)
-  //        "work section." + red squiggle (0.06 -> 0.18)
-  //        Both fade out cleanly: (0.18 -> 0.23)
+  // ACT 1: "welcome to my" (0.00 -> 0.14)
+  //        "work section." + red squiggle (0.05 -> 0.14)
+  //        Both fade out cleanly: (0.14 -> 0.18)
   //
-  // ACT 2: "but first," (0.24 -> 0.39)
-  //        "look closely." (0.29 -> 0.39)
-  //        Both fade out cleanly: (0.39 -> 0.44)
+  // ACT 2: "but first," (0.19 -> 0.32)
+  //        "look closely." (0.24 -> 0.32)
+  //        Both fade out cleanly: (0.32 -> 0.36)
   //
-  // ACT 3: STANDING TELESCOPE SEQUENCE (0.44 -> 0.66)
-  //        - Fades in standing on tripod in 3/4 perspective: (0.44 -> 0.50)
-  //        - Rotates in place on tripod mount as scrolled: (0.50 -> 0.58)
-  //        - Zooms directly into the ocular eyepiece: (0.58 -> 0.66)
+  // ACT 3: STANDING TELESCOPE SEQUENCE (0.37 -> 0.60)
+  //        - Fades in standing on tripod in 3/4 perspective: (0.37 -> 0.43)
+  //        - Rotates in place on tripod mount as scrolled: (0.44 -> 0.50)
+  //        - Zooms directly into the ocular eyepiece: (0.50 -> 0.58)
+  //        - Starlight bloom & transition into observatory: (0.56 -> 0.60)
   //
-  // ACT 4: VIEWING PROJECTS DIRECTLY THROUGH TELESCOPE (0.64 -> 1.00)
-  //        Observatory HUD active, curved edges, horizontal gliding through projects!
+  // ACT 4: VIEWING PROJECTS DIRECTLY THROUGH TELESCOPE (0.58 -> 1.00)
+  //        - Project 01 unveiled: (0.58 -> 0.60)
+  //        - PAUSE ON PROJECT 01: (0.60 -> 0.74)
+  //        - Horizontal gliding through remaining projects: (0.74 -> 1.00)
   // =========================================================================
 
   // Act 1 Line 1: "welcome to my"
   let l1Opacity = 0;
   let l1Y = 30;
-  if (scrollProgress <= 0.05) {
-    const t = Math.max(0, scrollProgress / 0.05);
+  if (scrollProgress <= 0.04) {
+    const t = Math.max(0, scrollProgress / 0.04);
     l1Opacity = t;
     l1Y = (1 - t) * 30;
-  } else if (scrollProgress <= 0.18) {
+  } else if (scrollProgress <= 0.14) {
     l1Opacity = 1;
     l1Y = 0;
-  } else if (scrollProgress <= 0.23) {
-    const t = (scrollProgress - 0.18) / (0.23 - 0.18);
+  } else if (scrollProgress <= 0.18) {
+    const t = (scrollProgress - 0.14) / (0.18 - 0.14);
     l1Opacity = 1 - t;
     l1Y = -t * 30;
   } else {
@@ -157,15 +161,15 @@ export default function WorkExperience({ projects, onOpenModal }: WorkExperience
   // Act 1 Line 2: "work section." (appears AFTER Line 1!)
   let l2Opacity = 0;
   let l2Y = 30;
-  if (scrollProgress >= 0.06 && scrollProgress <= 0.12) {
-    const t = (scrollProgress - 0.06) / (0.12 - 0.06);
+  if (scrollProgress >= 0.05 && scrollProgress <= 0.09) {
+    const t = (scrollProgress - 0.05) / (0.09 - 0.05);
     l2Opacity = t;
     l2Y = (1 - t) * 30;
-  } else if (scrollProgress > 0.12 && scrollProgress <= 0.18) {
+  } else if (scrollProgress > 0.09 && scrollProgress <= 0.14) {
     l2Opacity = 1;
     l2Y = 0;
-  } else if (scrollProgress > 0.18 && scrollProgress <= 0.23) {
-    const t = (scrollProgress - 0.18) / (0.23 - 0.18);
+  } else if (scrollProgress > 0.14 && scrollProgress <= 0.18) {
+    const t = (scrollProgress - 0.14) / (0.18 - 0.14);
     l2Opacity = 1 - t;
     l2Y = -t * 30;
   } else {
@@ -175,15 +179,15 @@ export default function WorkExperience({ projects, onOpenModal }: WorkExperience
   // Act 2 Line 1: "but first,"
   let l3Opacity = 0;
   let l3Y = 30;
-  if (scrollProgress >= 0.24 && scrollProgress <= 0.30) {
-    const t = (scrollProgress - 0.24) / (0.30 - 0.24);
+  if (scrollProgress >= 0.19 && scrollProgress <= 0.23) {
+    const t = (scrollProgress - 0.19) / (0.23 - 0.19);
     l3Opacity = t;
     l3Y = (1 - t) * 30;
-  } else if (scrollProgress > 0.30 && scrollProgress <= 0.39) {
+  } else if (scrollProgress > 0.23 && scrollProgress <= 0.32) {
     l3Opacity = 1;
     l3Y = 0;
-  } else if (scrollProgress > 0.39 && scrollProgress <= 0.44) {
-    const t = (scrollProgress - 0.39) / (0.44 - 0.39);
+  } else if (scrollProgress > 0.32 && scrollProgress <= 0.36) {
+    const t = (scrollProgress - 0.32) / (0.36 - 0.32);
     l3Opacity = 1 - t;
     l3Y = -t * 30;
   } else {
@@ -193,15 +197,15 @@ export default function WorkExperience({ projects, onOpenModal }: WorkExperience
   // Act 2 Line 2: "look closely." (appears AFTER Line 1!)
   let l4Opacity = 0;
   let l4Y = 30;
-  if (scrollProgress >= 0.29 && scrollProgress <= 0.35) {
-    const t = (scrollProgress - 0.29) / (0.35 - 0.29);
+  if (scrollProgress >= 0.24 && scrollProgress <= 0.28) {
+    const t = (scrollProgress - 0.24) / (0.28 - 0.24);
     l4Opacity = t;
     l4Y = (1 - t) * 30;
-  } else if (scrollProgress > 0.35 && scrollProgress <= 0.39) {
+  } else if (scrollProgress > 0.28 && scrollProgress <= 0.32) {
     l4Opacity = 1;
     l4Y = 0;
-  } else if (scrollProgress > 0.39 && scrollProgress <= 0.44) {
-    const t = (scrollProgress - 0.39) / (0.44 - 0.39);
+  } else if (scrollProgress > 0.32 && scrollProgress <= 0.36) {
+    const t = (scrollProgress - 0.32) / (0.36 - 0.32);
     l4Opacity = 1 - t;
     l4Y = -t * 30;
   } else {
@@ -211,30 +215,30 @@ export default function WorkExperience({ projects, onOpenModal }: WorkExperience
   // Act 3: True 3D WebGL Telescope (rotates in place, then zooms into eyepiece)
   let telescopeOpacity = 0;
 
-  if (scrollProgress >= 0.44 && scrollProgress <= 0.49) {
+  if (scrollProgress >= 0.37 && scrollProgress <= 0.43) {
     // 1. Fade in standing on tripod in 3/4 perspective
-    const t = (scrollProgress - 0.44) / (0.49 - 0.44);
+    const t = (scrollProgress - 0.37) / (0.43 - 0.37);
     telescopeOpacity = t;
-  } else if (scrollProgress > 0.49 && scrollProgress <= 0.66) {
-    // 2. Rotates in place, then begins slow, majestic camera zoom
+  } else if (scrollProgress > 0.43 && scrollProgress <= 0.55) {
+    // 2. Rotates on mount, then camera glides smoothly into the ocular lens
     telescopeOpacity = 1;
-  } else if (scrollProgress > 0.66 && scrollProgress <= 0.70) {
-    // 3. Smoothly dissolves as camera passes through ocular lens focal plane
-    telescopeOpacity = Math.max(0, 1 - (scrollProgress - 0.66) / 0.04);
+  } else if (scrollProgress > 0.55 && scrollProgress <= 0.59) {
+    // 3. Smoothly dissolves under starlight bloom
+    telescopeOpacity = Math.max(0, 1 - (scrollProgress - 0.55) / 0.04);
   } else {
     telescopeOpacity = 0;
   }
 
   // Act 4: Inside the Telescope Observatory (Spatial HUD + Horizontal Gliding Projects)
-  // Anchored firmly at Project 01 (0.66 -> 0.72) so the user has time to view the first project!
+  // Unveils Project 01 (0.57 -> 0.60), then PAUSES completely on Project 01 (0.60 -> 0.74)
   let projectStageOpacity = 0;
-  if (scrollProgress >= 0.66 && scrollProgress <= 0.71) {
-    projectStageOpacity = (scrollProgress - 0.66) / (0.71 - 0.66);
-  } else if (scrollProgress > 0.71) {
+  if (scrollProgress >= 0.57 && scrollProgress <= 0.60) {
+    projectStageOpacity = (scrollProgress - 0.57) / (0.60 - 0.57);
+  } else if (scrollProgress > 0.60) {
     projectStageOpacity = 1;
   }
 
-  const isInsideObservatory = scrollProgress >= 0.66;
+  const isInsideObservatory = scrollProgress >= 0.57;
 
   return (
     <div
@@ -357,11 +361,11 @@ export default function WorkExperience({ projects, onOpenModal }: WorkExperience
             </div>
 
             {/* Cosmic Starlight Bloom during Lens Entry onto Project 01 */}
-            {scrollProgress >= 0.65 && scrollProgress <= 0.72 && (
+            {scrollProgress >= 0.54 && scrollProgress <= 0.61 && (
               <div
-                className="absolute inset-0 pointer-events-none z-35 bg-[radial-gradient(circle_at_center,rgba(254,240,138,0.3)_0%,rgba(168,85,247,0.18)_40%,transparent_70%)] transition-opacity duration-150"
+                className="absolute inset-0 pointer-events-none z-35 bg-[radial-gradient(circle_at_center,rgba(254,240,138,0.35)_0%,rgba(168,85,247,0.22)_40%,transparent_70%)] transition-opacity duration-150"
                 style={{
-                  opacity: Math.sin(((scrollProgress - 0.65) / 0.07) * Math.PI),
+                  opacity: Math.sin(((scrollProgress - 0.54) / 0.07) * Math.PI),
                 }}
               />
             )}
@@ -405,7 +409,15 @@ export default function WorkExperience({ projects, onOpenModal }: WorkExperience
             <div className="relative z-40 px-6 sm:px-12 pb-6 flex items-center justify-between text-xs font-mono text-zinc-500">
               <div className="flex items-center gap-4">
                 <span className="text-[11px] uppercase tracking-wider text-violet-400 hidden sm:inline">
-                  Scroll to glide through case studies
+                  {scrollProgress < 0.74 ? (
+                    <span className="flex items-center gap-1.5 text-amber-300 font-semibold animate-pulse">
+                      <span>PROJECT 01 / 04</span>
+                      <span className="text-zinc-500">•</span>
+                      <span>SCROLL TO TRAVERSE CASE STUDIES →</span>
+                    </span>
+                  ) : (
+                    "Scroll to glide through case studies"
+                  )}
                 </span>
                 <div className="w-28 h-1 rounded-full bg-white/10 overflow-hidden">
                   <div
